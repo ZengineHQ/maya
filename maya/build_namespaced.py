@@ -3,7 +3,7 @@ from collections import OrderedDict
 from tempfile import mkstemp
 from os import remove, close
 from shutil import move, copyfile
-from wg_config import build_path
+from wg_config import canonical_build_path
 from wg_config import namespaced_build_path
 
 class PluginNamespacedCodeBuilder:
@@ -97,4 +97,4 @@ class PluginNamespacedCodeBuilder:
 		return self.namespaced_build_path + '/' + context['plugin_name']
 
 def make_namespaced_builder():
-	return PluginNamespacedCodeBuilder(build_path, namespaced_build_path)
+	return PluginNamespacedCodeBuilder(canonical_build_path, namespaced_build_path)

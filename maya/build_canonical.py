@@ -1,6 +1,6 @@
 import os, fnmatch
 from wg_config import source_path
-from wg_config import build_path
+from wg_config import canonical_build_path
 
 class PluginCanonicalCodeBuilder:
 
@@ -72,4 +72,4 @@ class PluginCanonicalCodeBuilder:
 						target_file.write('\n')
 
 def make_canonical_builder():
-	return PluginCanonicalCodeBuilder(source_path, build_path)
+	return PluginCanonicalCodeBuilder(source_path, canonical_build_path)
