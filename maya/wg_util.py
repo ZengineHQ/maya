@@ -3,9 +3,8 @@ from plugin_environment import make_environment
 from plugin_environment import PluginEnvironmentException
 
 def get_plugin_context(plugin_name, environment_name=None):
-	environment = make_environment(environment_name)
-
 	try:
+		environment = make_environment(environment_name)
 		return environment.get_plugin_context(plugin_name)
 
 	except PluginEnvironmentException as e:
