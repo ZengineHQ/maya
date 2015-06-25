@@ -1,15 +1,9 @@
 import sys
 from plugin_environment import make_environment
-from plugin_environment import PluginEnvironmentException
 
 def get_plugin_context(plugin_name, environment_name=None):
-	try:
-		environment = make_environment(environment_name)
-		return environment.get_plugin_context(plugin_name)
-
-	except PluginEnvironmentException as e:
-		print e
-		sys.exit()
+	environment = make_environment(environment_name)
+	return environment.get_plugin_context(plugin_name)
 
 def get_all_plugin_contexts():
 	environment = make_environment()

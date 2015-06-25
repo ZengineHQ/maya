@@ -20,12 +20,21 @@ from .deploy import deploy
 from .publish import publish
 from .publish import prompt_publish
 from .sublime_deploy import sublime_deploy
+from .plugin_environment import PluginEnvironmentException
+import sys
 
 __version__ = "0.0.1"
 
 def main():
 	arguments = docopt(__doc__, version=__version__)
 
+	try:
+		execute(arguments)
+
+	except PluginEnvironmentException as e:
+		sys.exit(e)
+
+def execute(arguments):
 	if arguments['sublime-deploy']:
 		sublime_deploy(arguments['<current-file-path>'])
 	else:
