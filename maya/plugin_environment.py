@@ -67,7 +67,10 @@ class PluginEnvironment:
 			raise PluginEnvironmentException("Environment not found: " + self.environment_name)
 
 	def get_environments(self):
-		return self.data
+		try:
+			return self.data['environments']
+		except KeyError:
+			raise PluginEnvironmentException("Config file: \"environments\" attribute not found.")
 
 class PluginEnvironmentException(Exception):
 	pass
