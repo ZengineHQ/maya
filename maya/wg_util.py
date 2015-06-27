@@ -13,10 +13,7 @@ def plugin_context_message(action, context):
 	return "{0} {1} {2} to {3}".format(action, context['plugin_name'], context['plugin_id'], context['api_endpoint'])
 
 def api_response_message(response):
-	if response.status_code == 200:
-		return "Done"
-	else:
-		return response.content
+	return "Done"
 
 def query_yes_no(question):
 	valid = {"yes": True, "y": True, "ye": True,

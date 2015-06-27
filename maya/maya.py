@@ -20,7 +20,7 @@ from .deploy import deploy
 from .publish import publish
 from .publish import prompt_publish
 from .sublime_deploy import sublime_deploy
-from .plugin_environment import PluginEnvironmentException
+from .exception import MayaException
 import sys
 
 __version__ = "0.0.1"
@@ -31,7 +31,7 @@ def main():
 	try:
 		execute(arguments)
 
-	except PluginEnvironmentException as e:
+	except MayaException as e:
 		sys.exit(e)
 
 def execute(arguments):

@@ -1,5 +1,6 @@
 import json
-from wg_config import config_file_path
+from .wg_config import config_file_path
+from .exception import MayaException
 
 class PluginEnvironment:
 	def __init__(self, data, environment_name=None):
@@ -17,7 +18,7 @@ class PluginEnvironment:
 			if environment.get('default'):
 				return environment_name
 
-		raise PluginEnvironmentException('No default environment was found')
+		raise MayaException('No default environment was found')
 
 	def get_all_plugin_contexts(self):
 		plugins = self.get_environment_plugins()
@@ -51,7 +52,7 @@ class PluginEnvironment:
 		try:
 			return plugins[plugin_name]
 		except KeyError:
-			raise PluginEnvironmentException("Plugin not found: " + plugin_name)
+			raise MayaException("Plugin not found: " + plugin_name)
 
 	def get_environment_plugins(self):
 		environment = self.get_environment()
@@ -64,16 +65,13 @@ class PluginEnvironment:
 		try:
 			return environments[self.environment_name]
 		except KeyError:
-			raise PluginEnvironmentException("Environment not found: " + self.environment_name)
+			raise MayaException("Environment not found: " + self.environment_name)
 
 	def get_environments(self):
 		try:
 			return self.data['environments']
 		except KeyError:
-			raise PluginEnvironmentException("Config file: \"environments\" attribute not found.")
-
-class PluginEnvironmentException(Exception):
-	pass
+			raise MayaException("Config file: \"environments\" attribute not found.")
 
 def make_environment(environment_name=None):
 
@@ -86,4 +84,4 @@ def read_json_config_file():
 		with open(config_file_path) as json_file:
 			return json.load(json_file)
 	except IOError:
-		raise PluginEnvironmentException('Config file not found: ' + config_file_path)
+		raise MayaException('Config file not found: ' + config_file_path)
