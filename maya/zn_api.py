@@ -3,20 +3,11 @@ from requests.exceptions import RequestException
 from requests.exceptions import HTTPError
 from .exception import MayaException
 
-def deploy(context, request):
+def update_plugin(context, data):
 	endpoint = assemble_plugin_endpoint(context)
 	headers = assemble_headers(context)
 
-	return execute_request(requests.put, endpoint, request, headers)
-
-def publish(context):
-	request = {}
-	request['publish'] = True
-
-	endpoint = assemble_plugin_endpoint(context)
-	headers = assemble_headers(context)
-
-	return execute_request(requests.put, endpoint, request, headers)
+	return execute_request(requests.put, endpoint, data, headers)
 
 def assemble_plugin_endpoint(context):
 	return "https://{0}/v1/plugins/{1}".format(context['api_endpoint'], context['plugin_id'])
@@ -24,17 +15,17 @@ def assemble_plugin_endpoint(context):
 def assemble_headers(context):
 	return {'Authorization': 'Bearer ' + context['access_token']}
 
-def execute_request(action, endpoint, request, headers):
+def execute_request(action, endpoint, data, headers):
 
-	response = execute_http_request(action, endpoint, request, headers)	
+	response = execute_http_request(action, endpoint, data, headers)	
 
 	assert_request_was_successful(response)
 
 	return response
 
-def execute_http_request(action, endpoint, request, headers):
+def execute_http_request(action, endpoint, data, headers):
 	try:
-		return action(endpoint, data=request, headers=headers)
+		return action(endpoint, data=data, headers=headers)
 
 	except RequestException as e:
 		raise MayaException(error_message_prefix + str(e))

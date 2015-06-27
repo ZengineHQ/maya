@@ -18,7 +18,7 @@ def do_deploy(context):
 
 	request = assemble_deploy_request(context)
 
-	return zn_api.deploy(context, request)
+	return zn_api.update_plugin(context, request)
 
 def assemble_deploy_request(context):
 	
@@ -29,4 +29,4 @@ def assemble_deploy_request(context):
 	request['draftHtml'] = builder.contents_of_file(context, "html")
 	request['draftCss'] = builder.contents_of_file(context, "css")
 
-	return request	
+	return request

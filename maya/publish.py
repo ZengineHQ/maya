@@ -19,6 +19,13 @@ def publish(context):
 
 	print plugin_context_message("Publishing", context)
 
-	response = zn_api.publish(context)
+	response = do_publish(context)
 
 	print api_response_message(response)
+
+def do_publish(context):
+
+	request = {}
+	request['publish'] = True
+
+	return zn_api.update_plugin(context, request)
