@@ -17,13 +17,17 @@ With maya, developers can code zengine plugins in a way they are used to – e.g
 Installation
 ------------
 
-Use `pip`_::
+Right now, because the repo is private, the recommended way to install maya is to clone the repo and add it to system path and ``alias maya=maya-runner.py``.
 
-    $ pip install -ve git+ssh://git@github.com/ZengineHQ/maya.git#egg=zn-maya --user
+Also install those packages using `pip`_::
 
-It's also good to install this optional package::
-
+    $ sudo pip install docopt
+    $ sudo pip install requests
     $ sudo pip install requests[security]
+
+Alternatively, you could try the following (as long as the root user has access to this repo)::
+
+    $ sudo pip install -ve git+ssh://git@github.com/ZengineHQ/maya.git#egg=zn-maya
 
 -----
 CLI
