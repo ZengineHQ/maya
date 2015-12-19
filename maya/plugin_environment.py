@@ -90,3 +90,5 @@ def read_json_config_file():
 			return json.load(json_file)
 	except IOError:
 		raise MayaException('Config file not found: ' + config_file_path)
+	except:
+		raise MayaException('Config file: JSON syntax error on ' + config_file_path)
