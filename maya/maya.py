@@ -23,7 +23,7 @@ from .sublime_deploy import sublime_deploy
 from .exception import MayaException
 import sys
 
-__version__ = "0.0.1"
+__version__ = "1.0.1"
 
 def main():
 	arguments = docopt(__doc__, version=__version__)
