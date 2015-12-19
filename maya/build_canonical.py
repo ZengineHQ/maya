@@ -45,13 +45,17 @@ class PluginCanonicalCodeBuilder:
 		self.merge_all_files_with_extension(self.plugin_path, extension, target_file_path)
 
 	def merge_dependency_files(self, extension, target_file_path):
-		with open(self.plugin_dependencies_config_path) as f:
+		try:
+			with open(self.plugin_dependencies_config_path) as f:
 
-			dependencies = f.read().splitlines()
+				dependencies = f.read().splitlines()
 
-			for dependency in dependencies:
-				dependency_path = self.dependencies_path + '/' + dependency
-				self.merge_all_files_with_extension(dependency_path, extension, target_file_path)
+				for dependency in dependencies:
+					dependency_path = self.dependencies_path + '/' + dependency
+					self.merge_all_files_with_extension(dependency_path, extension, target_file_path)
+
+		except IOError:
+			pass
 
 	def merge_all_files_with_extension(self, module_path, extension, target_file_path):
 		path = module_path + '/src'
