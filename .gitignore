@@ -2,6 +2,7 @@ node_modules/
 bower_components/
 build/
 venvpy/
+.cache/
 *.egg-info/
 *.pyc
 *.egg

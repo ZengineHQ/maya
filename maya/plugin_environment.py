@@ -18,7 +18,9 @@ class PluginEnvironment:
 			if environment.get('default'):
 				return environment_name
 
-		raise MayaException('No default environment was found')
+		first_environment_name = environments.keys()[0]
+
+		return first_environment_name
 
 	def get_all_plugin_contexts(self):
 		plugins = self.get_environment_plugins()
@@ -32,17 +34,20 @@ class PluginEnvironment:
 		return plugin_contexts
 
 	def get_plugin_context(self, plugin_name):
-		context = {}
 
 		environment = self.get_environment()
 		plugin = self.get_plugin(plugin_name)
 
-		context['plugin_name'] = plugin_name
-		context['plugin_id'] = plugin['id']
-		context['namespace'] = plugin['namespace']
-		context['route'] = plugin['route']
-		context['api_endpoint'] = environment['api_endpoint']
-		context['access_token'] = environment['access_token']
+		default_api_endpoint = 'api.zenginehq.com'
+
+		context = {
+			'plugin_id': plugin['id'],
+			'plugin_name': plugin_name,
+			'namespace': plugin['namespace'],
+			'route': plugin.get('route'),
+			'api_endpoint': environment.get('api_endpoint', default_api_endpoint),
+			'access_token': environment['access_token']
+		}
 
 		return context
 
@@ -85,3 +90,5 @@ def read_json_config_file():
 			return json.load(json_file)
 	except IOError:
 		raise MayaException('Config file not found: ' + config_file_path)
+	except:
+		raise MayaException('Config file: JSON syntax error on ' + config_file_path)

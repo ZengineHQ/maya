@@ -106,10 +106,28 @@ To use maya, your project structure must be the following::
     maya.json
 
 -------------------
-Canonical Namespace
+Build
 -------------------
 
-More on this later... (``wgn`` on angular components, ``wgn-`` on html templates)
+On the build step, maya looks at the plugin ``src`` folder and concatenates all js, html and css files into single files.
+
+To develop plugins along with other developers, all code can be written using a ``wgn`` canonical namespace, e.g.::
+
+    plugin.controller('wgnVotingMainCtrl', ['$scope', 'wgnVotingPluginBootstrap', 'wgnVotingPluginModel',
+        function ($scope, bootstrap, plugin) {
+            // ...
+        }
+    ]);
+
+::
+
+    <script type="text/ng-template" id="wgn-voting-list">
+        <div ng-controller="wgnVotingListController">
+            ...
+        </div>
+    </script>
+
+Maya will replace all the occurrences of ``wgn-`` by the *dashed* namespace and then all the ocurrences of ``wgn`` by the *camelCased* namespace specified on maya.json.
 
 ------------
 Reusing code
@@ -121,6 +139,17 @@ More on this later... (``dependencies`` file)
 Sublime Text Integration
 ------------------------
 
-More on this later... (instructions to create sublime build system that uses ``sublime-deploy`` task)
+You can create a Sublime Text build system, so every time you press Cmd + b, the code can be deployed to Zengine.
+
+Tools -> Build System -> New Build System... ::
+
+    {
+        "cmd": ["maya sublime-deploy $file_path"],
+        "working_dir": "$project_path",
+        "shell": true,
+        "path": "/path/to/maya"
+    }
+
+Create a sublime project on the root (sibling of maya.json).
 
 .. _pip: http://www.pip-installer.org/en/latest/
