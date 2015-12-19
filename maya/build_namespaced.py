@@ -61,6 +61,10 @@ class PluginNamespacedCodeBuilder:
 		copyfile(canonical_file_path, namespaced_file_path)
 
 	def resolve_route(self, context):
+
+		if not context['route']:
+			return
+
 		javascript_file_path = self.get_namespaced_plugin_file_path(context, 'js')
 
 		self.replace(javascript_file_path, '{replace-route}', context['route'])
