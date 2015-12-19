@@ -135,6 +135,17 @@ More on this later... (``dependencies`` file)
 Sublime Text Integration
 ------------------------
 
-More on this later... (instructions to create sublime build system that uses ``sublime-deploy`` task)
+You can create a Sublime Text build system, so every time you press Cmd + b, the code can be deployed to Zengine.
+
+Tools -> Build System -> New Build System... ::
+
+    {
+        "cmd": ["maya sublime-deploy $file_path"],
+        "working_dir": "$project_path",
+        "shell": true,
+        "path": "/path/to/maya"
+    }
+
+Create a sublime project on the root (sibling of maya.json).
 
 .. _pip: http://www.pip-installer.org/en/latest/
