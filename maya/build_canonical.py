@@ -1,6 +1,7 @@
 import os, fnmatch
-from wg_config import source_path
-from wg_config import canonical_build_path
+from .wg_config import source_path
+from .wg_config import canonical_build_path
+from .exception import MayaException
 
 class PluginCanonicalCodeBuilder:
 
@@ -83,9 +84,13 @@ class PluginCanonicalCodeBuilder:
 					target_file.write('\n')
 
 	def append_plugin_register(self, target_file_path):
-		plugin_register_file = open(self.plugin_register_file_path)
-		f = open(target_file_path, 'a')
-		f.write(plugin_register_file.read())
+		try:
+			with open(self.plugin_register_file_path) as plugin_register_file:
+				with open(target_file_path, 'a') as target_file:
+					target_file.write(plugin_register_file.read())
+
+		except IOError:
+			raise MayaException('Build error: plugin register file not found: ' + self.plugin_register_file_path)
 
 def make_canonical_builder():
 	return PluginCanonicalCodeBuilder(source_path, canonical_build_path)
