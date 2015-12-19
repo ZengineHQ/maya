@@ -144,7 +144,7 @@ You can create a Sublime Text build system, so every time you press Cmd + b, the
 Tools -> Build System -> New Build System... ::
 
     {
-        "cmd": ["maya sublime-deploy $file_path"],
+        "cmd": ["maya-runner.py sublime-deploy $file_path"],
         "working_dir": "$project_path",
         "shell": true,
         "path": "/path/to/maya"
