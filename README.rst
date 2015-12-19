@@ -102,10 +102,28 @@ To use maya, your project structure must be the following::
     maya.json
 
 -------------------
-Canonical Namespace
+Build
 -------------------
 
-More on this later... (``wgn`` on angular components, ``wgn-`` on html templates)
+On the build step, maya looks at the plugin ``src`` folder and concatenates all js, html and css files into single files.
+
+To develop plugins along with other developers, all code can be written using a ``wgn`` canonical namespace, e.g.::
+
+    plugin.controller('wgnVotingMainCtrl', ['$scope', 'wgnVotingPluginBootstrap', 'wgnVotingPluginModel',
+        function ($scope, bootstrap, plugin) {
+            // ...
+        }
+    ]);
+
+::
+
+    <script type="text/ng-template" id="wgn-voting-list">
+        <div ng-controller="wgnVotingListController">
+            ...
+        </div>
+    </script>
+
+Maya will replace all the occurrences of ``wgn-`` by the *dashed* namespace and then all the ocurrences of ``wgn`` by the *camelCased* namespace specified on maya.json.
 
 ------------
 Reusing code
