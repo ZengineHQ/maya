@@ -2,6 +2,7 @@ import sys, os
 from wg_util import get_plugin_context
 from deploy import deploy
 
+
 def sublime_deploy(current_file_path):
 
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)

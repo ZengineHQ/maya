@@ -4,6 +4,7 @@ from wg_util import api_response_message
 from build import build
 from build_namespaced import make_namespaced_builder
 
+
 def deploy(context):
 
     build(context)
@@ -14,11 +15,13 @@ def deploy(context):
 
     print api_response_message(response)
 
+
 def do_deploy(context):
 
     request = assemble_deploy_request(context)
 
     return zn_api.update_plugin(context, request)
+
 
 def assemble_deploy_request(context):
 

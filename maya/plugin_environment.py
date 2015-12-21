@@ -2,6 +2,7 @@ import json
 from .wg_config import config_file_path
 from .exception import MayaException
 
+
 class PluginEnvironment:
     def __init__(self, data, environment_name=None):
         self.data = data
@@ -78,11 +79,13 @@ class PluginEnvironment:
         except KeyError:
             raise MayaException("Config file: \"environments\" attribute not found.")
 
+
 def make_environment(environment_name=None):
 
     data = read_json_config_file()
 
     return PluginEnvironment(data, environment_name)
+
 
 def read_json_config_file():
     try:

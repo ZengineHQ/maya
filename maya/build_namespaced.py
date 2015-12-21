@@ -6,6 +6,7 @@ from shutil import move, copyfile
 from wg_config import canonical_build_path
 from wg_config import namespaced_build_path
 
+
 class PluginNamespacedCodeBuilder:
     def __init__(self, canonical_build_path, namespaced_build_path):
         self.canonical_build_path = canonical_build_path
@@ -99,6 +100,7 @@ class PluginNamespacedCodeBuilder:
 
     def get_namespaced_build_path(self, context):
         return self.namespaced_build_path + '/' + context['plugin_name']
+
 
 def make_namespaced_builder():
     return PluginNamespacedCodeBuilder(canonical_build_path, namespaced_build_path)

@@ -4,6 +4,7 @@ from wg_util import plugin_context_message
 from wg_util import api_response_message
 from wg_util import query_yes_no
 
+
 def prompt_publish(context):
 
     question = plugin_context_message("Publish", context) + "?"
@@ -12,6 +13,7 @@ def prompt_publish(context):
 
     if should_publish:
         publish(context)
+
 
 def publish(context):
 
@@ -22,6 +24,7 @@ def publish(context):
     response = do_publish(context)
 
     print api_response_message(response)
+
 
 def do_publish(context):
 

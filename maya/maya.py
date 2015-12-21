@@ -25,6 +25,7 @@ import sys
 
 __version__ = "1.0.1"
 
+
 def main():
     arguments = docopt(__doc__, version=__version__)
 
@@ -34,11 +35,13 @@ def main():
     except MayaException as e:
         sys.exit(e)
 
+
 def execute(arguments):
     if arguments['sublime-deploy']:
         sublime_deploy(arguments['<current-file-path>'])
     else:
         execute_normal_flow(arguments)
+
 
 def execute_normal_flow(arguments):
     action = parse_action(arguments)
@@ -47,6 +50,7 @@ def execute_normal_flow(arguments):
 
     for context in contexts:
         action(context)
+
 
 def parse_action(arguments):
     if arguments['build']:
@@ -58,6 +62,7 @@ def parse_action(arguments):
             return publish
         else:
             return prompt_publish
+
 
 def parse_contexts(arguments):
     if arguments['<plugin>']:

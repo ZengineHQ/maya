@@ -3,6 +3,7 @@ from .wg_config import source_path
 from .wg_config import canonical_build_path
 from .exception import MayaException
 
+
 class PluginCanonicalCodeBuilder:
 
     def __init__(self, source_path, build_path):
@@ -89,6 +90,7 @@ class PluginCanonicalCodeBuilder:
                     target_file.write(plugin_register_file.read())
         except IOError:
             raise MayaException('Build error: plugin register file not found: ' + self.plugin_register_file_path)
+
 
 def make_canonical_builder():
     return PluginCanonicalCodeBuilder(source_path, canonical_build_path)

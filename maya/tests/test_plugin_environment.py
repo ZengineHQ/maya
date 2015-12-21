@@ -1,5 +1,6 @@
 from maya.plugin_environment import PluginEnvironment
 
+
 def testGetPluginContext_Defaults():
 
     devEnv = {
