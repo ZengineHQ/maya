@@ -1,4 +1,5 @@
-import sys, os
+import os
+import sys
 from wg_util import get_plugin_context
 from deploy import deploy
 

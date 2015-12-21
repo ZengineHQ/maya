@@ -1,4 +1,5 @@
-import os, fnmatch
+import os
+import fnmatch
 from .wg_config import source_path
 from .wg_config import canonical_build_path
 from .exception import MayaException

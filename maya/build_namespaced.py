@@ -1,4 +1,5 @@
-import re, os
+import os
+import re
 from collections import OrderedDict
 from tempfile import mkstemp
 from os import remove, close
@@ -73,7 +74,7 @@ class PluginNamespacedCodeBuilder:
     def replace(self, file_path, pattern, subst):
         fh, abs_path = mkstemp()
 
-        with open(abs_path,'w') as new_file:
+        with open(abs_path, 'w') as new_file:
             with open(file_path) as old_file:
                 for line in old_file:
                     new_file.write(line.replace(pattern, subst))

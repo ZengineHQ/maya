@@ -23,7 +23,7 @@ def testGetPluginContext_Defaults():
     plugin_context = environment.get_plugin_context('some-plugin')
 
     assert plugin_context['plugin_id'] == 123
-    assert plugin_context['route'] == None
+    assert plugin_context['route'] is None
     assert plugin_context['access_token'] == 'devToken'
     assert plugin_context['api_endpoint'] == 'api.zenginehq.com'
 
