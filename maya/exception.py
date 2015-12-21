@@ -1,2 +1,2 @@
 class MayaException(Exception):
-	pass
+    pass

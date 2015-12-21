@@ -26,42 +26,42 @@ import sys
 __version__ = "1.0.1"
 
 def main():
-	arguments = docopt(__doc__, version=__version__)
+    arguments = docopt(__doc__, version=__version__)
 
-	try:
-		execute(arguments)
+    try:
+        execute(arguments)
 
-	except MayaException as e:
-		sys.exit(e)
+    except MayaException as e:
+        sys.exit(e)
 
 def execute(arguments):
-	if arguments['sublime-deploy']:
-		sublime_deploy(arguments['<current-file-path>'])
-	else:
-		execute_normal_flow(arguments)
+    if arguments['sublime-deploy']:
+        sublime_deploy(arguments['<current-file-path>'])
+    else:
+        execute_normal_flow(arguments)
 
 def execute_normal_flow(arguments):
-	action = parse_action(arguments)
+    action = parse_action(arguments)
 
-	contexts = parse_contexts(arguments)
+    contexts = parse_contexts(arguments)
 
-	for context in contexts:
-		action(context)
+    for context in contexts:
+        action(context)
 
 def parse_action(arguments):
-	if arguments['build']:
-		return build
-	elif arguments['deploy']:
-		return deploy
-	elif arguments['publish']:
-		if arguments['-y']:
-			return publish
-		else:
-			return prompt_publish
+    if arguments['build']:
+        return build
+    elif arguments['deploy']:
+        return deploy
+    elif arguments['publish']:
+        if arguments['-y']:
+            return publish
+        else:
+            return prompt_publish
 
 def parse_contexts(arguments):
-	if arguments['<plugin>']:
-		context = get_plugin_context(arguments['<plugin>'], arguments['<environment>'])
-		return [context]
-	else:
-		return get_all_plugin_contexts()
+    if arguments['<plugin>']:
+        context = get_plugin_context(arguments['<plugin>'], arguments['<environment>'])
+        return [context]
+    else:
+        return get_all_plugin_contexts()
