@@ -1,7 +1,5 @@
 import os
-from distutils.dir_util import copy_tree
 from shutil import copyfile
-from shutil import make_archive
 from subprocess import Popen
 
 
@@ -32,9 +30,10 @@ class ServiceBuilder:
             self.copy_file(file_name)
 
     def copy_folder(self, folder):
-        src_path = self.service_path + '/' + folder
-        dst_path = self.build_path + '/' + folder
-        copy_tree(src_path, dst_path)
+        src_path = self.service_path + '/' + folder + '/'
+        dst_path = self.build_path + '/' + folder + '/'
+        p = Popen(['cp', '-a', src_path, dst_path])
+        p.wait()
 
     def copy_file(self, file_name):
         src_path = self.service_path + '/' + file_name
@@ -46,9 +45,8 @@ class ServiceBuilder:
         p.wait()
 
     def zip_build_folder(self):
-        zip_folder = self.build_path
-        zip_file_path = self.build_path + '/dist'
-        make_archive(zip_file_path, 'zip', zip_folder)
+        p = Popen(['ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', 'dist', 'dist.zip'], cwd=self.service_path)
+        p.wait()
 
 
 def service_build(context):
