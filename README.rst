@@ -21,13 +21,15 @@ Right now, because the repo is private, the recommended way to install maya is t
 
 Also install those packages using `pip`_::
 
-    $ sudo pip install docopt
-    $ sudo pip install requests
-    $ sudo pip install requests[security]
+    $ pip install docopt
+    $ pip install requests
+    $ pip install requests[security]
 
-Alternatively, you could try the following (as long as the root user has access to this repo)::
+Alternatively, you could try the following::
 
-    $ sudo pip install -ve git+ssh://git@github.com/ZengineHQ/maya.git#egg=zn-maya
+    $ pip install -ve git+ssh://git@github.com/ZengineHQ/maya.git#egg=zn-maya
+
+Consider managing python using something like `pyenv`_.
 
 -----
 CLI
@@ -153,3 +155,4 @@ Tools -> Build System -> New Build System... ::
 Create a sublime project on the root (sibling of maya.json).
 
 .. _pip: http://www.pip-installer.org/en/latest/
+.. _pyenv: https://github.com/yyuu/pyenv
