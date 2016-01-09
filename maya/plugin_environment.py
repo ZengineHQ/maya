@@ -52,6 +52,27 @@ class PluginEnvironment:
 
         return context
 
+    def get_service_context(self, service_name):
+        plugin, service = self.find_plugin_for_service(service_name)
+        context = self.get_plugin_context(plugin['name'])
+        context['service'] = service
+        return context
+
+    def find_plugin_for_service(self, service_name):
+        plugins = self.get_environment_plugins()
+
+        for plugin_name, plugin in plugins.iteritems():
+            try:
+                if plugin['services'][service_name]:
+                    service = plugin['services'][service_name]
+                    service['name'] = service_name
+                    plugin['name'] = plugin_name
+                    return (plugin, service)
+            except KeyError:
+                pass
+
+        raise MayaException("Service not found: " + service_name)
+
     def get_plugin(self, plugin_name):
         plugins = self.get_environment_plugins()
 
