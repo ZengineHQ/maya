@@ -1,0 +1,33 @@
+import requests
+from requests.exceptions import RequestException
+from requests.exceptions import HTTPError
+from ..exception import MayaException
+
+
+class ZnApi:
+
+    def __init__(self, context):
+        self.api_url = "https://{0}/v1".format(context['api_endpoint'])
+        self.headers = {
+            'Authorization': 'Bearer ' + context['access_token']
+        }
+        self.error_message_prefix = 'Error when calling Zengine API: '
+
+    def execute_request(self, r):
+        response = self.execute_http_request(r)
+        self.assert_request_was_successful(response)
+        return response
+
+    def execute_http_request(self, r):
+        try:
+            url = self.api_url + r['endpoint']
+            action = getattr(requests, r['method'])
+            return action(url, data=r['data'], headers=self.headers)
+        except RequestException as e:
+            raise MayaException(self.error_message_prefix + str(e))
+
+    def assert_request_was_successful(self, response):
+        try:
+            response.raise_for_status()
+        except HTTPError:
+            raise MayaException(self.error_message_prefix + response.content)

@@ -1,4 +1,4 @@
-import zn_api
+from zn_api.zn_plugin_api import update_plugin
 from deploy import deploy
 from wg_util import plugin_context_message
 from wg_util import api_response_message
@@ -31,4 +31,4 @@ def do_publish(context):
     request = {}
     request['publish'] = True
 
-    return zn_api.update_plugin(context, request)
+    return update_plugin(context, request)

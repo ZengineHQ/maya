@@ -1,4 +1,4 @@
-import zn_api
+from zn_api.zn_plugin_api import update_plugin
 from wg_util import plugin_context_message
 from wg_util import api_response_message
 from build import build
@@ -20,7 +20,7 @@ def do_deploy(context):
 
     request = assemble_deploy_request(context)
 
-    return zn_api.update_plugin(context, request)
+    return update_plugin(context, request)
 
 
 def assemble_deploy_request(context):
