@@ -1,6 +1,7 @@
 import os
 from shutil import copyfile
 from subprocess import Popen
+from ..wg_util import service_context_message_simple
 
 
 class ServiceBuilder:
@@ -8,6 +9,7 @@ class ServiceBuilder:
     def __init__(self, service_name):
         self.service_path = 'backend/' + service_name
         self.build_path = self.service_path + '/dist'
+        self.dist_file_name = 'dist.zip'
 
     def build(self):
         self.make_path(self.build_path)
@@ -45,10 +47,26 @@ class ServiceBuilder:
         p.wait()
 
     def zip_build_folder(self):
-        p = Popen(['ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', 'dist', 'dist.zip'], cwd=self.service_path)
+        p = Popen(
+            ['ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', 'dist', self.dist_file_name],
+            cwd=self.service_path
+        )
         p.wait()
+
+    def get_dist_file_path(self):
+        return self.service_path + '/' + self.dist_file_name
 
 
 def service_build(context):
+    print service_context_message_simple("Building", context)
+    instantiate(context).build()
+    print "Done"
+
+
+def get_dist_file_path(context):
+    return instantiate(context).get_dist_file_path()
+
+
+def instantiate(context):
     service_name = context['service']['name']
-    return ServiceBuilder(service_name).build()
+    return ServiceBuilder(service_name)

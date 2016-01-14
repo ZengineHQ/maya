@@ -2,7 +2,7 @@
 
 Usage:
   maya (build | deploy | publish) [options] [<plugin>] [<environment>]
-  maya service (build) [<service>] [<environment>]
+  maya service (build | deploy) [<service>] [<environment>]
   maya sublime-deploy <current-file-path>
   maya (-h | --help)
   maya --version
@@ -23,6 +23,7 @@ from .publish import publish
 from .publish import prompt_publish
 from .sublime_deploy import sublime_deploy
 from .service.service_build import service_build
+from .service.service_deploy import service_deploy
 from .exception import MayaException
 import sys
 
@@ -64,6 +65,9 @@ def parse_action(arguments):
 def parse_service_action(arguments):
     if arguments['build']:
         return service_build
+
+    if arguments['deploy']:
+        return service_deploy
 
 
 def parse_plugin_action(arguments):

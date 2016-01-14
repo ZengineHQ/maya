@@ -12,5 +12,19 @@ def update_plugin(context, data):
     return api.execute_request(request)
 
 
+def upload_service(context, files):
+    api = ZnApi(context)
+    endpoint = assemble_service_endpoint(context) + '/uploads'
+    request = {
+        'endpoint': endpoint,
+        'data': files
+    }
+    return api.upload_file(request)
+
+
 def assemble_plugin_endpoint(context):
     return "/plugins/{0}".format(context['plugin_id'])
+
+
+def assemble_service_endpoint(context):
+    return "/plugins/{0}/services/{1}".format(context['plugin_id'], context['service']['id'])
