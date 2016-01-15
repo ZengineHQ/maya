@@ -154,14 +154,14 @@ Tools -> Build System -> New Build System... ::
 
 Create a sublime project on the root (sibling of maya.json).
 
-.. _pip: http://www.pip-installer.org/en/latest/
-.. _pyenv: https://github.com/yyuu/pyenv
 
 ------------------------
 Frontend Testing in Dev Mode
 ------------------------
 
-To avoid having to do a full page reload while testing, a refresh button can be injected into a workspace. With dev mode on, insert the following code into the console: ::
+To avoid having to do a full page reload while testing, a refresh button can be injected into a workspace while in dev mode. 
+
+You can either install this `plugin`_ or insert the following code into the console: ::
 
     var myanchor = document.createElement('a');
     myanchor.href = "javascript:var theRoot = angular.element(document.querySelector('[ng-app=\"wizehive\"]')).injector().get('$rootScope');
@@ -171,3 +171,7 @@ To avoid having to do a full page reload while testing, a refresh button can be 
     li.appendChild(myanchor);
     var theUL = document.querySelector('.navbar-top-links.pull-right');
     theUL.insertBefore(li, theUL.firstChild);
+
+.. _pip: http://www.pip-installer.org/en/latest/
+.. _pyenv: https://github.com/yyuu/pyenv
+.. _plugin: https://platform.zenginehq.com/?overlay=marketplace&marketplace.action=browse&marketplace.pluginId=331 
