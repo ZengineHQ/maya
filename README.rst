@@ -161,7 +161,7 @@ Create a sublime project on the root (sibling of maya.json).
 Frontend Testing in Dev Mode
 ------------------------
 
-To avoid having to do a full page reload while testing, a refresh button can be injected into a workspace. With dev mode on, insert the following code into the console: ::
+To avoid having to do a full page reload while testing, a refresh button can be injected into a workspace. With dev mode on, insert the following code into the console::
 
 var myanchor = document.createElement('a')
 myanchor.href = "javascript:var theRoot = angular.element(document.querySelector('[ng-app=\"wizehive\"]')).injector().get('$rootScope');var theScope = angular.element(document.querySelector('[ng-controller=\"PluginDeveloperCntl\"]')).scope();theRoot.$broadcast('devplugin-changed', theScope.plugin.data, true);"
