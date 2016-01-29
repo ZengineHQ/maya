@@ -47,7 +47,8 @@ class PluginEnvironment:
             'namespace': plugin['namespace'],
             'route': plugin.get('route'),
             'api_endpoint': environment.get('api_endpoint', default_api_endpoint),
-            'access_token': environment['access_token']
+            'access_token': environment['access_token'],
+            'environment_name': environment['name']
         }
 
         return context
@@ -90,7 +91,9 @@ class PluginEnvironment:
         environments = self.get_environments()
 
         try:
-            return environments[self.environment_name]
+            environment = environments[self.environment_name]
+            environment['name'] = self.environment_name
+            return environment
         except KeyError:
             raise MayaException("Environment not found: " + self.environment_name)
 

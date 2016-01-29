@@ -6,10 +6,11 @@ from ..wg_util import service_context_message_simple
 
 class ServiceBuilder:
 
-    def __init__(self, service_name):
+    def __init__(self, service_name, environment_name):
         self.service_path = 'backend/' + service_name
         self.build_path = self.service_path + '/dist'
         self.dist_file_name = 'dist.zip'
+        self.environment_name = environment_name
 
     def build(self):
         self.make_path(self.build_path)
@@ -54,7 +55,8 @@ class ServiceBuilder:
         if not script_exists:
             return
 
-        p = Popen(['npm', 'run', script_name], cwd=self.service_path)
+        env_arg = '--env=' + self.environment_name
+        p = Popen(['npm', 'run', script_name, '--', env_arg], cwd=self.service_path)
         p.wait()
 
     def check_npm_script_exists(self, script_name):
@@ -96,4 +98,5 @@ def get_dist_file_path(context):
 
 def instantiate(context):
     service_name = context['service']['name']
-    return ServiceBuilder(service_name)
+    environment_name = context['environment_name']
+    return ServiceBuilder(service_name, environment_name)
