@@ -49,7 +49,7 @@ class ServiceBuilder:
         p.wait()
 
     def exec_npm_maya_post_build_script(self):
-        script_name = 'maya-post-build'
+        script_name = 'maya-build'
 
         script_exists = self.check_npm_script_exists(script_name)
         if not script_exists:
