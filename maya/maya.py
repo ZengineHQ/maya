@@ -2,7 +2,7 @@
 
 Usage:
   maya (build | deploy | publish) [options] [<plugin>] [<environment>]
-  maya service (build | deploy) [<service>] [<environment>]
+  maya service (build | deploy) <service> [<environment>]
   maya sublime-deploy <current-file-path>
   maya (-h | --help)
   maya --version
