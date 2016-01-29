@@ -58,6 +58,7 @@ class ServiceBuilder:
         p.wait()
 
     def check_npm_script_exists(self, script_name):
+        # npm run-script | grep $script_name
         p_script_list = Popen(
             ['npm', 'run-script'],
             cwd=self.service_path,
