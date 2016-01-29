@@ -55,8 +55,8 @@ class ServiceBuilder:
         if not script_exists:
             return
 
-        env_arg = '--env=' + self.environment_name
-        p = Popen(['npm', 'run', script_name, '--', env_arg], cwd=self.service_path)
+        os.environ['MAYA_ENV'] = self.environment_name
+        p = Popen(['npm', 'run', script_name], cwd=self.service_path)
         p.wait()
 
     def check_npm_script_exists(self, script_name):
