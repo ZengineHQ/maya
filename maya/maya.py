@@ -2,7 +2,7 @@
 
 Usage:
   maya (build | deploy | publish) [options] [<plugin>] [<environment>]
-  maya service (build | deploy) [<service>] [<environment>]
+  maya service (build | deploy) <service> [<environment>]
   maya sublime-deploy <current-file-path>
   maya (-h | --help)
   maya --version
@@ -27,7 +27,7 @@ from .service.service_deploy import service_deploy
 from .exception import MayaException
 import sys
 
-__version__ = "1.0.2"
+__version__ = "1.1.0"
 
 
 def main():
