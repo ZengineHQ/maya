@@ -27,7 +27,7 @@ from .service.service_deploy import service_deploy
 from .exception import MayaException
 import sys
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 
 def main():
