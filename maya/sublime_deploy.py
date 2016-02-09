@@ -12,10 +12,10 @@ def sublime_deploy(current_file_path):
 
     try:
         plugin_name = path_list[path_list.index('plugins') + 1]
-
-        context = get_plugin_context(plugin_name)
-
-        deploy(context)
-
     except ValueError:
         print 'Build failed: file is outside the context of a plugin'
+        return
+
+    context = get_plugin_context(plugin_name)
+
+    deploy(context)
