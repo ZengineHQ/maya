@@ -33,6 +33,16 @@ class ServiceBuilder:
         for file_name in files_to_copy:
             self.copy_file(file_name)
 
+        self.copy_patched_requestify_lib()
+
+    def copy_patched_requestify_lib(self):
+        # The 'requestify' lib bundled in the original plugin zip
+        #  was changed by the Zengine Team
+        # Therefore it cannot be downloaded via npm install
+        # Let's copy it instead
+        self.make_path(self.build_path + '/node_modules/requestify')
+        self.copy_folder('node_modules/requestify')
+
     def copy_folder(self, folder):
         src_path = self.service_path + '/' + folder + '/'
         dst_path = self.build_path + '/' + folder + '/'
