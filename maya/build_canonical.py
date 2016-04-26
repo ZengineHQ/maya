@@ -3,6 +3,7 @@ import fnmatch
 from .wg_config import source_path
 from .wg_config import canonical_build_path
 from .exception import MayaException
+from .frontend.frontend_dependency_resolve import FrontendDependencyResolve
 
 
 class PluginCanonicalCodeBuilder:
@@ -10,17 +11,17 @@ class PluginCanonicalCodeBuilder:
     def __init__(self, source_path, build_path):
         self.source_path = source_path
         self.build_path = build_path
+        self.dependency_resolve = FrontendDependencyResolve(source_path)
 
     def build(self, context):
         self.plugin_name = context['plugin_name']
 
         self.plugin_path = self.source_path + '/' + self.plugin_name
-        self.dependencies_path = self.source_path + '/common'
-        self.plugin_dependencies_config_path = self.plugin_path + '/dependencies'
         self.plugin_register_file_path = self.plugin_path + '/plugin-register.js'
         self.plugin_build_path = self.build_path + '/' + self.plugin_name
 
         self.create_plugin_build_path()
+        self.resolve_dependencies()
         self.merge_files_into_one('js')
         self.merge_files_into_one('html')
         self.merge_files_into_one('css')
@@ -28,6 +29,9 @@ class PluginCanonicalCodeBuilder:
     def create_plugin_build_path(self):
         if not os.path.exists(self.plugin_build_path):
             os.makedirs(self.plugin_build_path)
+
+    def resolve_dependencies(self):
+        self.dependency_paths = self.dependency_resolve.resolve(self.plugin_path)
 
     def merge_files_into_one(self, extension):
         target_file_path = self.create_target_file(extension)
@@ -48,16 +52,8 @@ class PluginCanonicalCodeBuilder:
         self.merge_all_files_with_extension(self.plugin_path, extension, target_file_path)
 
     def merge_dependency_files(self, extension, target_file_path):
-        try:
-            with open(self.plugin_dependencies_config_path) as f:
-
-                dependencies = f.read().splitlines()
-
-                for dependency in dependencies:
-                    dependency_path = self.dependencies_path + '/' + dependency
-                    self.merge_all_files_with_extension(dependency_path, extension, target_file_path)
-        except IOError:
-            pass
+        for dependency_path in self.dependency_paths:
+            self.merge_all_files_with_extension(dependency_path, extension, target_file_path)
 
     def merge_all_files_with_extension(self, module_path, extension, target_file_path):
         path = module_path + '/src'
