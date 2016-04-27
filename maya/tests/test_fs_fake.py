@@ -51,3 +51,36 @@ def test_create_files_nested_dirs():
         assert f.read() == 'hi'
     with fs.open('test-dir/a/hello.txt') as f:
         assert f.read() == 'hello'
+
+
+def test_paths_with_extension_when_flat_dir():
+    fs = FakeFileSystem()
+    fs.create_dir('test-dir')
+    fs.create_file('test-dir/hi.txt')
+    fs.create_file('test-dir/hello.js')
+    fs.create_file('test-dir/hello.txt')
+    fs.create_file('test-dir/something.css')
+    fs.create_file('test-dir/.gitignore')
+
+    paths = fs.paths_with_extension('test-dir', 'txt')
+    assert paths == [
+        'test-dir/hi.txt',
+        'test-dir/hello.txt'
+    ]
+
+
+def test_paths_with_extension_when_nested_dirs():
+    fs = FakeFileSystem()
+    fs.create_dir('test-dir')
+    fs.create_file('test-dir/hi.txt')
+    fs.create_dir('test-dir/src')
+    fs.create_file('test-dir/src/hello.js')
+    fs.create_dir('test-dir/docs')
+    fs.create_file('test-dir/docs/hello.txt')
+    fs.create_file('test-dir/.gitignore')
+
+    paths = fs.paths_with_extension('test-dir', 'txt')
+    assert paths == [
+        'test-dir/hi.txt',
+        'test-dir/docs/hello.txt'
+    ]
