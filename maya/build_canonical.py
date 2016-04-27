@@ -4,14 +4,15 @@ from .wg_config import source_path
 from .wg_config import canonical_build_path
 from .exception import MayaException
 from .frontend.frontend_dependency_resolve import FrontendDependencyResolve
+from .util.fs import FileSystem
 
 
 class PluginCanonicalCodeBuilder:
 
-    def __init__(self, source_path, build_path):
+    def __init__(self, fs, source_path, build_path):
         self.source_path = source_path
         self.build_path = build_path
-        self.dependency_resolve = FrontendDependencyResolve(source_path)
+        self.dependency_resolve = FrontendDependencyResolve(fs, source_path)
 
     def build(self, context):
         self.plugin_name = context['plugin_name']
@@ -31,7 +32,7 @@ class PluginCanonicalCodeBuilder:
             os.makedirs(self.plugin_build_path)
 
     def resolve_dependencies(self):
-        self.dependency_paths = self.dependency_resolve.resolve(self.plugin_path)
+        self.dependency_paths = self.dependency_resolve.resolve(self.plugin_name)
 
     def merge_files_into_one(self, extension):
         target_file_path = self.create_target_file(extension)
@@ -90,4 +91,5 @@ class PluginCanonicalCodeBuilder:
 
 
 def make_canonical_builder():
-    return PluginCanonicalCodeBuilder(source_path, canonical_build_path)
+    fs = FileSystem()
+    return PluginCanonicalCodeBuilder(fs, source_path, canonical_build_path)

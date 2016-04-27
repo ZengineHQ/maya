@@ -4,7 +4,6 @@ from maya.tests.util.fs_fake import FakeFileSystem
 
 def test_open_unexisting_file_throws_error():
     fs = FakeFileSystem()
-
     with raises(IOError):
         fs.open('plugins/a.txt')
 

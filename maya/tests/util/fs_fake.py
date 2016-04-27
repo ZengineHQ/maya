@@ -3,7 +3,7 @@ class FakeFileSystem:
         self.dirs = {}
 
     def create_dir(self, dir_path):
-        self.dirs[dir_path] = FakeDir()
+        self.dirs[dir_path] = FakeDir(dir_path)
 
     def create_file(self, path, content):
         segments = path.split('/')
@@ -24,13 +24,18 @@ class FakeFileSystem:
 
 
 class FakeDir:
-    def __init__(self):
+    def __init__(self, path):
+        self.path = path
         self.files = {}
 
     def create_file(self, filename, content):
         self.files[filename] = FakeFile(content)
 
     def get_file(self, filename):
+        if filename not in self.files:
+            raise IOError(
+                "File '{0}' not found in '{1}'".format(filename, self.path)
+            )
         return self.files[filename]
 
 
