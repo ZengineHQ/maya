@@ -7,10 +7,12 @@ class FrontendDependencyResolve:
         self.fs = fs
         self.frontend_path = frontend_path
 
-    def resolve(self, plugin_path):
-        local_dependency_paths = self.get_local_dependency_paths(plugin_path)
-        external_dep_paths = self.get_ext_dep_paths(plugin_path)
-        return external_dep_paths + local_dependency_paths
+    def ls(self, plugin):
+        local_dependency_paths = self.get_local_dependency_paths(plugin)
+        external_dep_paths = self.get_ext_dep_paths(plugin)
+        dep_paths = external_dep_paths + local_dependency_paths
+        plugin_path = self.frontend_path + '/' + plugin
+        return dep_paths + [plugin_path]
 
     def get_local_dependency_paths(self, plugin):
         plugin_dependencies_config_path = self.frontend_path + '/' + plugin + '/dependencies'

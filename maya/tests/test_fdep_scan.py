@@ -3,28 +3,31 @@ from maya.tests.util.fs_fake import FakeFileSystem
 from maya.frontend.frontend_dependency_resolve import FrontendDependencyResolve
 
 
-def test_scan_no_deps():
+def test_ls_no_deps():
     fs = FakeFileSystem()
     fs.create_dir('plugins/portals')
-    dep_scanner = FrontendDependencyResolve(fs, 'plugins')
-    deps = dep_scanner.resolve('portals')
-    assert deps == []
+    scan_path = FrontendDependencyResolve(fs, 'plugins')
+    deps = scan_path.ls('portals')
+    assert deps == [
+        'plugins/portals'
+    ]
 
 
-def test_scan_local_deps():
+def test_ls_local_deps():
     fs = FakeFileSystem()
     fs.create_dir('plugins/portals')
     deplist = "fileupload\nunderscore\n"
     fs.create_file('plugins/portals/dependencies', deplist)
-    dep_scanner = FrontendDependencyResolve(fs, 'plugins')
-    deps = dep_scanner.resolve('portals')
+    scan_path = FrontendDependencyResolve(fs, 'plugins')
+    deps = scan_path.ls('portals')
     assert deps == [
         'plugins/common/fileupload',
-        'plugins/common/underscore'
+        'plugins/common/underscore',
+        'plugins/portals'
     ]
 
 
-def test_scan_when_package_json_with_external_deps():
+def test_ls_when_package_json_with_external_deps():
     fs = FakeFileSystem()
     fs.create_dir('plugins/portals')
     package = {
@@ -34,27 +37,30 @@ def test_scan_when_package_json_with_external_deps():
         }
     }
     fs.create_file('plugins/portals/package.json', json.dumps(package))
-    dep_scanner = FrontendDependencyResolve(fs, 'plugins')
-    deps = dep_scanner.resolve('portals')
+    scan_path = FrontendDependencyResolve(fs, 'plugins')
+    deps = scan_path.ls('portals')
     assert deps == [
         'plugins/portals/node_modules/fileupload',
-        'plugins/portals/node_modules/underscore'
+        'plugins/portals/node_modules/underscore',
+        'plugins/portals'
     ]
 
 
-def test_scan_when_package_json_without_external_deps():
+def test_ls_when_package_json_without_external_deps():
     fs = FakeFileSystem()
     fs.create_dir('plugins/portals')
     package = {
         'name': 'portal'
     }
     fs.create_file('plugins/portals/package.json', json.dumps(package))
-    dep_scanner = FrontendDependencyResolve(fs, 'plugins')
-    deps = dep_scanner.resolve('portals')
-    assert deps == []
+    scan_path = FrontendDependencyResolve(fs, 'plugins')
+    deps = scan_path.ls('portals')
+    assert deps == [
+        'plugins/portals'
+    ]
 
 
-def test_scan_ext_deps_come_before_local():
+def test_ls_ext_deps_come_before_local():
     fs = FakeFileSystem()
     fs.create_dir('plugins/portals')
 
@@ -71,11 +77,12 @@ def test_scan_ext_deps_come_before_local():
     }
     fs.create_file('plugins/portals/package.json', json.dumps(package))
 
-    dep_scanner = FrontendDependencyResolve(fs, 'plugins')
-    deps = dep_scanner.resolve('portals')
+    scan_path = FrontendDependencyResolve(fs, 'plugins')
+    deps = scan_path.ls('portals')
     assert deps == [
         'plugins/portals/node_modules/fileupload',
         'plugins/portals/node_modules/underscore',
         'plugins/common/fileupload',
-        'plugins/common/underscore'
+        'plugins/common/underscore',
+        'plugins/portals'
     ]

@@ -12,7 +12,7 @@ class PluginCanonicalCodeBuilder:
     def __init__(self, fs, source_path, build_path):
         self.source_path = source_path
         self.build_path = build_path
-        self.dependency_resolve = FrontendDependencyResolve(fs, source_path)
+        self.scan_path = FrontendDependencyResolve(fs, source_path)
 
     def build(self, context):
         self.plugin_name = context['plugin_name']
@@ -22,7 +22,7 @@ class PluginCanonicalCodeBuilder:
         self.plugin_build_path = self.build_path + '/' + self.plugin_name
 
         self.create_plugin_build_path()
-        self.resolve_dependencies()
+        self.scan_paths = self.scan_path.ls(self.plugin_name)
         self.merge_files_into_one('js')
         self.merge_files_into_one('html')
         self.merge_files_into_one('css')
@@ -31,15 +31,10 @@ class PluginCanonicalCodeBuilder:
         if not os.path.exists(self.plugin_build_path):
             os.makedirs(self.plugin_build_path)
 
-    def resolve_dependencies(self):
-        self.dependency_paths = self.dependency_resolve.resolve(self.plugin_name)
-
     def merge_files_into_one(self, extension):
         target_file_path = self.create_target_file(extension)
-
-        self.merge_plugin_files(extension, target_file_path)
-        self.merge_dependency_files(extension, target_file_path)
-
+        for scan_path in self.scan_paths:
+            self.merge_all_files_with_extension(scan_path, extension, target_file_path)
         if extension == 'js':
             self.append_plugin_register(target_file_path)
 
@@ -48,13 +43,6 @@ class PluginCanonicalCodeBuilder:
         target_file_path = self.plugin_build_path + '/' + target_file_name
         open(target_file_path, 'w').close()
         return target_file_path
-
-    def merge_plugin_files(self, extension, target_file_path):
-        self.merge_all_files_with_extension(self.plugin_path, extension, target_file_path)
-
-    def merge_dependency_files(self, extension, target_file_path):
-        for dependency_path in self.dependency_paths:
-            self.merge_all_files_with_extension(dependency_path, extension, target_file_path)
 
     def merge_all_files_with_extension(self, module_path, extension, target_file_path):
         path = module_path + '/src'
