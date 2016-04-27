@@ -1,21 +1,21 @@
 import json
 
 
-class FrontendDependencyResolve:
+class ScanPath:
 
     def __init__(self, fs, frontend_path):
         self.fs = fs
         self.frontend_path = frontend_path
 
     def ls(self, plugin):
-        local_dependency_paths = self.get_local_dependency_paths(plugin)
-        external_dep_paths = self.get_ext_dep_paths(plugin)
-        dep_paths = external_dep_paths + local_dependency_paths
-        plugin_path = self.frontend_path + '/' + plugin
-        return dep_paths + [plugin_path]
+        self.plugin_path = self.frontend_path + '/' + plugin
+        dependency_paths = \
+            self.get_external_dependency_paths() + \
+            self.get_local_dependency_paths()
+        return dependency_paths + [self.plugin_path]
 
-    def get_local_dependency_paths(self, plugin):
-        plugin_dependencies_config_path = self.frontend_path + '/' + plugin + '/dependencies'
+    def get_local_dependency_paths(self):
+        plugin_dependencies_config_path = self.plugin_path + '/dependencies'
         dependencies_path = self.frontend_path + '/common'
         try:
             with self.fs.open(plugin_dependencies_config_path) as f:
@@ -27,18 +27,18 @@ class FrontendDependencyResolve:
         except IOError:
             return []
 
-    def get_ext_dep_paths(self, plugin):
-        package_json_path = self.frontend_path + '/' + plugin + '/package.json'
-        node_modules_path = self.frontend_path + '/' + plugin + '/node_modules'
+    def get_external_dependency_paths(self):
+        package_json_path = self.plugin_path + '/package.json'
+        node_modules_path = self.plugin_path + '/node_modules'
         try:
             with self.fs.open(package_json_path) as f:
                 package_json = json.loads(f.read())
                 if 'dependencies' not in package_json:
                     return []
-                dep_names = package_json['dependencies'].keys()
+                dependency_names = package_json['dependencies'].keys()
                 return [
-                    node_modules_path + '/' + dep_name
-                    for dep_name in dep_names
+                    node_modules_path + '/' + dependency_name
+                    for dependency_name in dependency_names
                 ]
         except IOError:
             return []

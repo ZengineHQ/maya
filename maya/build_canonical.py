@@ -3,7 +3,7 @@ import fnmatch
 from .wg_config import source_path
 from .wg_config import canonical_build_path
 from .exception import MayaException
-from .frontend.frontend_dependency_resolve import FrontendDependencyResolve
+from .frontend.scan_path import ScanPath
 from .util.fs import FileSystem
 
 
@@ -12,13 +12,13 @@ class PluginCanonicalCodeBuilder:
     def __init__(self, fs, source_path, build_path):
         self.source_path = source_path
         self.build_path = build_path
-        self.scan_path = FrontendDependencyResolve(fs, source_path)
+        self.scan_path = ScanPath(fs, source_path)
 
     def build(self, context):
         self.plugin_name = context['plugin_name']
 
-        self.plugin_path = self.source_path + '/' + self.plugin_name
-        self.plugin_register_file_path = self.plugin_path + '/plugin-register.js'
+        plugin_path = self.source_path + '/' + self.plugin_name
+        self.plugin_register_file_path = plugin_path + '/plugin-register.js'
         self.plugin_build_path = self.build_path + '/' + self.plugin_name
 
         self.create_plugin_build_path()
