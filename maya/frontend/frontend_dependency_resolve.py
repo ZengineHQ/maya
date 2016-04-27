@@ -1,3 +1,5 @@
+import json
+
 
 class FrontendDependencyResolve:
 
@@ -7,7 +9,8 @@ class FrontendDependencyResolve:
 
     def resolve(self, plugin_path):
         local_dependency_paths = self.get_local_dependency_paths(plugin_path)
-        return local_dependency_paths or []
+        external_dep_paths = self.get_ext_dep_paths(plugin_path)
+        return external_dep_paths + local_dependency_paths
 
     def get_local_dependency_paths(self, plugin):
         plugin_dependencies_config_path = self.frontend_path + '/' + plugin + '/dependencies'
@@ -20,4 +23,20 @@ class FrontendDependencyResolve:
                     for dependency_name in dependency_names
                 ]
         except IOError:
-            pass
+            return []
+
+    def get_ext_dep_paths(self, plugin):
+        package_json_path = self.frontend_path + '/' + plugin + '/package.json'
+        node_modules_path = self.frontend_path + '/' + plugin + '/node_modules'
+        try:
+            with self.fs.open(package_json_path) as f:
+                package_json = json.loads(f.read())
+                if 'dependencies' not in package_json:
+                    return []
+                dep_names = package_json['dependencies'].keys()
+                return [
+                    node_modules_path + '/' + dep_name
+                    for dep_name in dep_names
+                ]
+        except IOError:
+            return []
