@@ -20,6 +20,23 @@ def test_create_dir_and_file():
         assert dependency_names[0] == 'fileupload'
 
 
+def test_dir_exists():
+    fs = FakeFileSystem()
+    fs.create_dir('plugins/portals')
+    assert fs.dir_exists('plugins') is True
+    assert fs.dir_exists('plugins/portals') is True
+    assert fs.dir_exists('plugins/portals/src') is False
+
+
+def test_create_nested_dirs():
+    fs = FakeFileSystem()
+    fs.create_dir('plugins/portals')
+    fs.create_dir('plugins/portals/src')
+    assert fs.dir_exists('plugins') is True
+    assert fs.dir_exists('plugins/portals') is True
+    assert fs.dir_exists('plugins/portals/src') is True
+
+
 def test_create_file_without_all_parent_dirs_throws_error():
     fs = FakeFileSystem()
 

@@ -37,11 +37,30 @@ def test_ls_when_package_json_with_external_deps():
         }
     }
     fs.create_file('plugins/portals/package.json', json.dumps(package))
+    fs.create_dir('plugins/portals/node_modules/fileupload/src')
+    fs.create_dir('plugins/portals/node_modules/underscore/src')
     scan_path = ScanPath(fs, 'plugins')
     paths = scan_path.ls('portals')
     assert paths == [
         'plugins/portals/node_modules/fileupload',
         'plugins/portals/node_modules/underscore',
+        'plugins/portals'
+    ]
+
+
+def test_ls_when_package_json_with_external_dep_without_src_folder():
+    fs = FakeFileSystem()
+    fs.create_dir('plugins/portals')
+    package = {
+        'dependencies': {
+            'fileupload': '/some/url'
+        }
+    }
+    fs.create_file('plugins/portals/package.json', json.dumps(package))
+    fs.create_dir('plugins/portals/node_modules/fileupload')
+    scan_path = ScanPath(fs, 'plugins')
+    paths = scan_path.ls('portals')
+    assert paths == [
         'plugins/portals'
     ]
 
@@ -76,6 +95,8 @@ def test_ls_ext_deps_come_before_local():
         }
     }
     fs.create_file('plugins/portals/package.json', json.dumps(package))
+    fs.create_dir('plugins/portals/node_modules/fileupload/src')
+    fs.create_dir('plugins/portals/node_modules/underscore/src')
 
     scan_path = ScanPath(fs, 'plugins')
     paths = scan_path.ls('portals')

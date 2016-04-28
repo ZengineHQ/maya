@@ -6,8 +6,11 @@ class FileSystem:
     def __init__(self):
         self.dirs = {}
 
+    def dir_exists(self, dir_path):
+        return os.path.exists(dir_path)
+
     def create_dir(self, dir_path):
-        if not os.path.exists(dir_path):
+        if not self.dir_exists(dir_path):
             os.makedirs(dir_path)
 
     def create_file(self, path):

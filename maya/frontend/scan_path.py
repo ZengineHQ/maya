@@ -36,9 +36,14 @@ class ScanPath:
                 if 'dependencies' not in package_json:
                     return []
                 dependency_names = package_json['dependencies'].keys()
-                return [
+                dependency_paths = [
                     node_modules_path + '/' + dependency_name
                     for dependency_name in dependency_names
+                ]
+                return [
+                    dependency_path
+                    for dependency_path in dependency_paths
+                    if self.fs.dir_exists(dependency_path + '/src')
                 ]
         except IOError:
             return []

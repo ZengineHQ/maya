@@ -2,6 +2,13 @@ class FakeFileSystem:
     def __init__(self):
         self.root_dirs = {}
 
+    def dir_exists(self, dir_path):
+        try:
+            self.__get_dir(dir_path)
+            return True
+        except IOError:
+            return False
+
     def create_dir(self, dir_path):
         (root_segment, segments) = self.__extract_root(dir_path)
         if root_segment not in self.root_dirs:
@@ -73,9 +80,13 @@ class FakeDir:
         self.dirs.append(dir)
 
     def get_dir(self, segments):
-        if len(segments) == 1:
-            dir_name = segments[0]
-            return self.dirs.get(dir_name)
+        dir_name = segments.pop(0)
+        dir = self.dirs.get(dir_name)
+        if not dir:
+            return
+        if not segments:
+            return dir
+        return dir.get_dir(segments)
 
     def create_file(self, filename, content):
         self.files[filename] = FakeFile(content)
