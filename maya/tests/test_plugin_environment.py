@@ -1,9 +1,8 @@
 from maya.plugin_environment import PluginEnvironment
 
 
-def testGetPluginContext_Defaults():
-
-    devEnv = {
+def test_plugin_context_default_values():
+    dev_env = {
         'access_token': 'devToken',
         'plugins': {
             'some-plugin': {
@@ -12,25 +11,21 @@ def testGetPluginContext_Defaults():
             }
         }
     }
-
     data = {
         'environments': {
-            'dev': devEnv
+            'dev': dev_env
         }
     }
-
     environment = PluginEnvironment(data)
     plugin_context = environment.get_plugin_context('some-plugin')
+    assert plugin_context['plugin']['id'] == 123
+    assert plugin_context['plugin']['route'] is None
+    assert plugin_context['api']['access_token'] == 'devToken'
+    assert plugin_context['api']['endpoint'] == 'api.zenginehq.com'
 
-    assert plugin_context['plugin_id'] == 123
-    assert plugin_context['route'] is None
-    assert plugin_context['access_token'] == 'devToken'
-    assert plugin_context['api_endpoint'] == 'api.zenginehq.com'
 
-
-def testGetPluginContext_WhenNoEnvSpecified_and_DefaultEnvExists_ShouldPickDefault():
-
-    devEnv = {
+def test_plugin_context_no_env_uses_default():
+    dev_env = {
         'access_token': 'devToken',
         'api_endpoint': 'some.endpoint',
         'plugins': {
@@ -42,19 +37,16 @@ def testGetPluginContext_WhenNoEnvSpecified_and_DefaultEnvExists_ShouldPickDefau
         },
         'default': True
     }
-
     data = {
         'environments': {
-            'dev': devEnv
+            'dev': dev_env
         }
     }
-
     environment = PluginEnvironment(data)
     plugin_context = environment.get_plugin_context('some-plugin')
-
-    assert plugin_context['plugin_id'] == 123
-    assert plugin_context['plugin_name'] == 'some-plugin'
-    assert plugin_context['route'] == '/some-route'
-    assert plugin_context['namespace'] == 'someNamespace'
-    assert plugin_context['api_endpoint'] == 'some.endpoint'
-    assert plugin_context['access_token'] == 'devToken'
+    assert plugin_context['plugin']['id'] == 123
+    assert plugin_context['plugin']['name'] == 'some-plugin'
+    assert plugin_context['plugin']['route'] == '/some-route'
+    assert plugin_context['plugin']['namespace'] == 'someNamespace'
+    assert plugin_context['api']['endpoint'] == 'some.endpoint'
+    assert plugin_context['api']['access_token'] == 'devToken'

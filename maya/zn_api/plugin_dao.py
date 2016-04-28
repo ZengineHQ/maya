@@ -20,6 +20,6 @@ class PluginDao:
 
 
 def update_plugin(context, request):
-    plugin_api = PluginDao(ZnApi(context))
-    request['id'] = context['plugin_id']
+    plugin_api = PluginDao(ZnApi(context['api']))
+    request['id'] = context['plugin']['id']
     return plugin_api.update(request)

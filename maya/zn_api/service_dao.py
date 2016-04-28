@@ -20,9 +20,9 @@ class ServiceDao:
 
 
 def upload_draft(context, zip_path):
-    dao = ServiceDao(ZnApi(context))
+    dao = ServiceDao(ZnApi(context['api']))
     return dao.upload({
-        'plugin_id': context['plugin_id'],
+        'plugin_id': context['plugin']['id'],
         'id': context['service']['id'],
         'draftSource': (
             'dist.zip',

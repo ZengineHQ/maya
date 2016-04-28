@@ -108,5 +108,5 @@ def get_dist_file_path(context):
 
 def instantiate(context):
     service_name = context['service']['name']
-    environment_name = context['environment_name']
+    environment_name = context['env']
     return ServiceBuilder(service_name, environment_name)

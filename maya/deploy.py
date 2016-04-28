@@ -19,8 +19,9 @@ def do_deploy(context):
 
 def assemble_deploy_request(context):
     builder = make_namespaced_builder()
+    name = context['plugin']['name']
     request = {}
-    request['draftJs'] = builder.contents_of_file(context, "js")
-    request['draftHtml'] = builder.contents_of_file(context, "html")
-    request['draftCss'] = builder.contents_of_file(context, "css")
+    request['draftJs'] = builder.contents_of_file(name, "js")
+    request['draftHtml'] = builder.contents_of_file(name, "html")
+    request['draftCss'] = builder.contents_of_file(name, "css")
     return request

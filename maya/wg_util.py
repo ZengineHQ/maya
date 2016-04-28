@@ -18,22 +18,30 @@ def get_all_plugin_contexts():
 
 
 def plugin_context_message(action, context):
-    return "{0} {1} {2} to {3}".format(action, context['plugin_name'], context['plugin_id'], context['api_endpoint'])
+    return "{0} {1} {2} to {3}".format(
+        action,
+        context['plugin']['name'],
+        context['plugin']['id'],
+        context['api']['endpoint']
+    )
 
 
 def service_context_message_simple(action, context):
     return "{0} {1}/{2}".format(
         action,
-        context['plugin_name'], context['service']['name']
+        context['plugin']['name'],
+        context['service']['name']
     )
 
 
 def service_context_message(action, context):
     return "{0} {1}/{2} {3}/{4} to {5}".format(
         action,
-        context['plugin_name'], context['service']['name'],
-        context['plugin_id'], context['service']['id'],
-        context['api_endpoint']
+        context['plugin']['name'],
+        context['service']['name'],
+        context['plugin']['id'],
+        context['service']['id'],
+        context['api']['endpoint']
     )
 
 

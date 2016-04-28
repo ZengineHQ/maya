@@ -13,8 +13,8 @@ class PluginCanonicalCodeBuilder:
         self.build_path = build_path
         self.scan_path = ScanPath(fs, source_path)
 
-    def build(self, context):
-        self.plugin_name = context['plugin_name']
+    def build(self, plugin_name):
+        self.plugin_name = plugin_name
 
         self.plugin_path = self.source_path + '/' + self.plugin_name
         self.plugin_build_path = self.build_path + '/' + self.plugin_name
