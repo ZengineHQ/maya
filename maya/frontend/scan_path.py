@@ -1,3 +1,4 @@
+import collections
 import json
 
 
@@ -32,7 +33,10 @@ class ScanPath:
         node_modules_path = self.plugin_path + '/node_modules'
         try:
             with self.fs.open(package_json_path) as f:
-                package_json = json.loads(f.read())
+                package_json = json.loads(
+                    f.read(),
+                    object_pairs_hook=collections.OrderedDict
+                )
                 if 'dependencies' not in package_json:
                     return []
                 dependency_names = package_json['dependencies'].keys()

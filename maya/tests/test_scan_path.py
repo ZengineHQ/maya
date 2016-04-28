@@ -30,20 +30,23 @@ def test_ls_local_deps():
 def test_ls_when_package_json_with_external_deps():
     fs = FakeFileSystem()
     fs.create_dir('plugins/portals')
-    package = {
-        'dependencies': {
-            'fileupload': '/some/url',
-            'underscore': '/other/url'
+    package = """{
+        "dependencies": {
+            "zn-underscore": "/other/url",
+            "apples": "/other/url",
+            "fileupload": "/some/url"
         }
-    }
-    fs.create_file('plugins/portals/package.json', json.dumps(package))
+    }"""
+    fs.create_file('plugins/portals/package.json', package)
+    fs.create_dir('plugins/portals/node_modules/zn-underscore/src')
+    fs.create_dir('plugins/portals/node_modules/apples/src')
     fs.create_dir('plugins/portals/node_modules/fileupload/src')
-    fs.create_dir('plugins/portals/node_modules/underscore/src')
     scan_path = ScanPath(fs, 'plugins')
     paths = scan_path.ls('portals')
     assert paths == [
+        'plugins/portals/node_modules/zn-underscore',
+        'plugins/portals/node_modules/apples',
         'plugins/portals/node_modules/fileupload',
-        'plugins/portals/node_modules/underscore',
         'plugins/portals'
     ]
 
