@@ -27,7 +27,7 @@ from .service.service_deploy import service_deploy
 from .exception import MayaException
 import sys
 
-__version__ = "1.2.0"
+__version__ = "2.0.edge"
 
 
 def main():
