@@ -5,9 +5,9 @@ from ..wg_util import service_context_message
 from ..wg_util import api_response_message
 
 
-def service_deploy(context):
+def service_deploy(context, args):
 
-    service_build(context)
+    service_build(context, args)
 
     print service_context_message("Deploying", context)
 

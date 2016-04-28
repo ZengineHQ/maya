@@ -96,7 +96,7 @@ class ServiceBuilder:
         return self.service_path + '/' + self.dist_file_name
 
 
-def service_build(context):
+def service_build(context, args):
     print service_context_message_simple("Building", context)
     instantiate(context).build()
     print "Done"

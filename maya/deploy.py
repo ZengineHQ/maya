@@ -5,8 +5,8 @@ from build import build
 from build_namespaced import make_namespaced_builder
 
 
-def deploy(context):
-    build(context)
+def deploy(context, args):
+    build(context, args)
     print plugin_context_message("Deploying", context)
     response = do_deploy(context)
     print api_response_message(response)

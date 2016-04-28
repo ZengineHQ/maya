@@ -13,7 +13,7 @@ class PluginCodeBuilder:
         self.namespaced_builder.build(context)
 
 
-def build(context):
+def build(context, args):
     print "Building {0}".format(context['plugin_name'])
 
     make_builder().build(context)
