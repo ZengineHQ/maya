@@ -45,14 +45,14 @@ class PluginCanonicalCodeBuilder:
             self.fs.append_files(file_paths, target_file_path)
 
     def append_plugin_register(self, target_file_path):
+        plugin_register_path = self.plugin_path + '/plugin-register.js'
         try:
-            plugin_register_path = self.plugin_path + '/plugin-register.js'
             self.fs.append_file(
                 plugin_register_path,
                 target_file_path
             )
         except IOError:
-            raise MayaException('Build error: plugin register file not found: ' + self.plugin_register_file_path)
+            raise MayaException('Build error: plugin register file not found: ' + plugin_register_path)
 
 
 def make_canonical_builder():
