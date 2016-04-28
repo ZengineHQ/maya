@@ -19,10 +19,15 @@ class ServiceDao:
         return "/plugins/{0}/services/{1}".format(plugin_id, service_id)
 
 
-def upload_service(context, files):
-    service_api = ServiceDao(ZnApi(context))
-    return service_api.upload({
+def upload_draft(context, zip_path):
+    dao = ServiceDao(ZnApi(context))
+    return dao.upload({
         'plugin_id': context['plugin_id'],
         'id': context['service']['id'],
-        'files': files
+        'draftSource': (
+            'dist.zip',
+            open(zip_path, 'rb'),
+            'application/zip',
+            {'Expires': '0'}
+        )
     })
