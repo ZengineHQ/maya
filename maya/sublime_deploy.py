@@ -1,7 +1,7 @@
 import os
 import sys
 from wg_util import get_plugin_context
-from deploy import deploy
+from .frontend.f_deploy import f_deploy
 
 
 def sublime_deploy(current_file_path, args):
@@ -11,7 +11,7 @@ def sublime_deploy(current_file_path, args):
         print 'Build failed: file is outside the context of a plugin'
         return
     context = get_plugin_context(plugin_name)
-    deploy(context, args)
+    f_deploy(context, args)
 
 
 def find_plugin_name(current_file_path):
