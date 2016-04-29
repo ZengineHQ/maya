@@ -1,8 +1,10 @@
 """Maya (Zengine Plugin Build Automation).
 
 Usage:
-  maya (build | deploy | publish) [options] [<plugin>] [<environment>]
-  maya service (build | deploy) <service> [<environment>]
+  maya build [<plugin>] [--frontend | --backend] [--env=ENV]
+  maya deploy [<plugin>] [--frontend | --backend] [--env=ENV]
+  maya publish [<plugin>] [--frontend | --backend] [-y] [--env=ENV]
+  maya service (build | deploy) <service> [--env=ENV]
   maya sublime-deploy <current-file-path>
   maya (-h | --help)
   maya --version
@@ -17,7 +19,7 @@ from docopt import docopt
 from .wg_util import get_plugin_context
 from .wg_util import get_service_context
 from .wg_util import get_all_plugin_contexts
-from .frontend.f_build import f_build
+from .build import build
 from .deploy import deploy
 from .publish import publish
 from .sublime_deploy import sublime_deploy
@@ -65,7 +67,7 @@ def parse_service_action(args):
 
 def parse_plugin_action(args):
     if args['build']:
-        return f_build
+        return build
     if args['deploy']:
         return deploy
     if args['publish']:
@@ -74,9 +76,9 @@ def parse_plugin_action(args):
 
 def parse_contexts(args):
     if args['<service>']:
-        context = get_service_context(args['<service>'], args['<environment>'])
+        context = get_service_context(args['<service>'], args['--env'])
         return [context]
     if args['<plugin>']:
-        context = get_plugin_context(args['<plugin>'], args['<environment>'])
+        context = get_plugin_context(args['<plugin>'], args['--env'])
         return [context]
-    return get_all_plugin_contexts()
+    return get_all_plugin_contexts(args['--env'])

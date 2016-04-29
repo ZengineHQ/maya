@@ -97,6 +97,15 @@ class ServiceBuilder:
 
 
 def service_build(context, args):
+    if 'services' not in context['plugin']:
+        return build_one_service(context, args)
+    services = context['plugin'].pop('services')
+    for service in services:
+        context['service'] = service
+        build_one_service(context, args)
+
+
+def build_one_service(context, args):
     print service_context_message_simple("Building", context)
     instantiate(context).build()
     print "Done"

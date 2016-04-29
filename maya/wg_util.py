@@ -12,8 +12,8 @@ def get_service_context(service_name, environment_name=None):
     return environment.get_service_context(service_name)
 
 
-def get_all_plugin_contexts():
-    environment = make_environment()
+def get_all_plugin_contexts(environment_name=None):
+    environment = make_environment(environment_name)
     return environment.get_all_plugin_contexts()
 
 

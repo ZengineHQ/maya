@@ -6,13 +6,18 @@ from ..wg_util import api_response_message
 
 
 def service_deploy(context, args):
+    if 'services' not in context['plugin']:
+        return deploy_one_service(context, args)
+    services = context['plugin'].pop('services')
+    for service in services:
+        context['service'] = service
+        deploy_one_service(context, args)
 
+
+def deploy_one_service(context, args):
     service_build(context, args)
-
     print service_context_message("Deploying", context)
-
     response = do_deploy(context)
-
     print api_response_message(response)
 
 
