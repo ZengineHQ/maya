@@ -6,7 +6,6 @@ from maya.frontend.scan_path import ScanPath
 
 
 class PluginCanonicalCodeBuilder:
-
     def __init__(self, fs, source_path, build_path):
         self.fs = fs
         self.source_path = source_path
@@ -15,11 +14,12 @@ class PluginCanonicalCodeBuilder:
 
     def build(self, plugin_name):
         self.plugin_name = plugin_name
-
         self.plugin_path = self.source_path + '/' + self.plugin_name
         self.plugin_build_path = self.build_path + '/' + self.plugin_name
         self.scan_paths = self.scan_path.ls(self.plugin_name)
+        self.create_files()
 
+    def create_files(self):
         self.fs.create_dir(self.plugin_build_path)
         self.merge_files_into_one('js')
         self.merge_files_into_one('html')

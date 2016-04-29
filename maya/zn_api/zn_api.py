@@ -5,7 +5,6 @@ from ..exception import MayaException
 
 
 class ZnApi:
-
     def __init__(self, options):
         self.api_url = "https://{0}/v1".format(options['endpoint'])
         self.headers = {

@@ -50,16 +50,14 @@ def api_response_message(response):
 
 
 def query_yes_no(question):
-    valid = {"yes": True, "y": True, "ye": True,
-             "no": False, "n": False}
-
+    valid = {
+        "yes": True, "y": True, "ye": True,
+        "no": False, "n": False
+    }
     prompt = " [y/n] "
-
     while True:
         sys.stdout.write(question + prompt)
-
         choice = raw_input().lower()
-
         if choice in valid:
             return valid[choice]
         else:

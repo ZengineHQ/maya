@@ -5,7 +5,6 @@ from maya.wg_util import service_context_message_simple
 
 
 class ServiceBuilder:
-
     def __init__(self, service_name, environment_name):
         self.service_path = 'backend/' + service_name
         self.build_path = self.service_path + '/dist'
