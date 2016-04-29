@@ -1,3 +1,4 @@
+import collections
 import json
 from .wg_config import config_file_path
 from .exception import MayaException
@@ -30,6 +31,7 @@ class PluginEnvironment:
     def get_plugin_context(self, plugin_name):
         environment = self.get_environment()
         plugin = self.get_plugin(plugin_name)
+        services = self.assemble_services(plugin)
         default_api_endpoint = 'api.zenginehq.com'
         context = {
             'plugin': {
@@ -37,6 +39,7 @@ class PluginEnvironment:
                 'name': plugin_name,
                 'namespace': plugin['namespace'],
                 'route': plugin.get('route'),
+                'services': services
             },
             'api': {
                 'endpoint': environment.get('api_endpoint', default_api_endpoint),
@@ -45,6 +48,14 @@ class PluginEnvironment:
             'env': environment['name']
         }
         return context
+
+    def assemble_services(self, plugin):
+        services = plugin.get('services', {})
+        assembled = []
+        for service_name, service in services.iteritems():
+            service['name'] = service_name
+            assembled.append(service)
+        return assembled
 
     def get_service_context(self, service_name):
         plugin, service = self.find_plugin_for_service(service_name)
@@ -100,7 +111,10 @@ def make_environment(environment_name=None):
 def read_json_config_file():
     try:
         with open(config_file_path) as json_file:
-            return json.load(json_file)
+            return json.load(
+                json_file,
+                object_pairs_hook=collections.OrderedDict
+            )
     except IOError:
         raise MayaException('Config file not found: ' + config_file_path)
     except:
