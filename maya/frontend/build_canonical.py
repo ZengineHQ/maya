@@ -1,8 +1,8 @@
-from .wg_config import source_path
-from .wg_config import canonical_build_path
-from .exception import MayaException
-from .frontend.scan_path import ScanPath
-from .util.fs import FileSystem
+from maya.wg_config import source_path
+from maya.wg_config import canonical_build_path
+from maya.exception import MayaException
+from maya.util.fs import FileSystem
+from maya.frontend.scan_path import ScanPath
 
 
 class PluginCanonicalCodeBuilder:

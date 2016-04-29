@@ -17,7 +17,7 @@ from docopt import docopt
 from .wg_util import get_plugin_context
 from .wg_util import get_service_context
 from .wg_util import get_all_plugin_contexts
-from .build import build
+from .frontend.f_build import f_build
 from .deploy import deploy
 from .publish import publish
 from .sublime_deploy import sublime_deploy
@@ -65,7 +65,7 @@ def parse_service_action(args):
 
 def parse_plugin_action(args):
     if args['build']:
-        return build
+        return f_build
     if args['deploy']:
         return deploy
     if args['publish']:

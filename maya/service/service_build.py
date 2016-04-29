@@ -1,7 +1,7 @@
 import os
 from shutil import copyfile
 from subprocess import Popen, call, PIPE
-from ..wg_util import service_context_message_simple
+from maya.wg_util import service_context_message_simple
 
 
 class ServiceBuilder:

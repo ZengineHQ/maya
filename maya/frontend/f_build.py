@@ -2,7 +2,7 @@ from build_canonical import make_canonical_builder
 from build_namespaced import make_namespaced_builder
 
 
-def build(context, args):
+def f_build(context, args):
     plugin = context['plugin']
     print "Building {0}".format(plugin['name'])
     canonical = make_canonical_builder()
