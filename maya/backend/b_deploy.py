@@ -1,11 +1,11 @@
-from .service_build import get_dist_file_path
-from .service_build import service_build
+from .b_build import get_dist_file_path
+from .b_build import b_build
 from ..zn_api.service_dao import upload_draft
 from ..wg_util import service_context_message
 from ..wg_util import api_response_message
 
 
-def service_deploy(context, args):
+def b_deploy(context, args):
     if 'services' not in context['plugin']:
         return deploy_one_service(context, args)
     services = context['plugin'].pop('services')
@@ -15,7 +15,7 @@ def service_deploy(context, args):
 
 
 def deploy_one_service(context, args):
-    service_build(context, args)
+    b_build(context, args)
     print service_context_message("Deploying", context)
     response = do_deploy(context)
     print api_response_message(response)

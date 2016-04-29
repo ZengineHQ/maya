@@ -3,16 +3,16 @@
 Usage:
   maya build [<plugin>] [--frontend | --backend] [--env=ENV]
   maya deploy [<plugin>] [--frontend | --backend] [--env=ENV]
-  maya publish [<plugin>] [--frontend | --backend] [-y] [--env=ENV]
+  maya publish [<plugin>] [--frontend | --backend] [--env=ENV] [-y]
   maya service (build | deploy) <service> [--env=ENV]
   maya sublime-deploy <current-file-path>
-  maya (-h | --help)
+  maya --help
   maya --version
 
 Options:
-  -h --help     Show this screen.
-  --version     Show version.
-  -y            Publish without prompt.
+  -h --help        Show this screen.
+  -v --version     Show version.
+  -y               Publish without prompt.
 
 """
 from docopt import docopt
@@ -23,8 +23,8 @@ from .build import build
 from .deploy import deploy
 from .publish import publish
 from .sublime_deploy import sublime_deploy
-from .service.service_build import service_build
-from .service.service_deploy import service_deploy
+from .backend.b_build import b_build
+from .backend.b_deploy import b_deploy
 from .exception import MayaException
 import sys
 
@@ -60,9 +60,9 @@ def parse_action(args):
 
 def parse_service_action(args):
     if args['build']:
-        return service_build
+        return b_build
     if args['deploy']:
-        return service_deploy
+        return b_deploy
 
 
 def parse_plugin_action(args):

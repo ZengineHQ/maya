@@ -96,7 +96,7 @@ class ServiceBuilder:
         return self.service_path + '/' + self.dist_file_name
 
 
-def service_build(context, args):
+def b_build(context, args):
     if 'services' not in context['plugin']:
         return build_one_service(context, args)
     services = context['plugin'].pop('services')
