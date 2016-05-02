@@ -1,11 +1,10 @@
 import os
 from shutil import copyfile
 from subprocess import Popen, call, PIPE
-from ..wg_util import service_context_message_simple
+from maya.wg_util import service_context_message_simple
 
 
 class ServiceBuilder:
-
     def __init__(self, service_name, environment_name):
         self.service_path = 'backend/' + service_name
         self.build_path = self.service_path + '/dist'
@@ -96,7 +95,16 @@ class ServiceBuilder:
         return self.service_path + '/' + self.dist_file_name
 
 
-def service_build(context):
+def b_build(context, args):
+    if 'services' not in context['plugin']:
+        return build_one_service(context, args)
+    services = context['plugin'].pop('services')
+    for service in services:
+        context['service'] = service
+        build_one_service(context, args)
+
+
+def build_one_service(context, args):
     print service_context_message_simple("Building", context)
     instantiate(context).build()
     print "Done"
@@ -108,5 +116,5 @@ def get_dist_file_path(context):
 
 def instantiate(context):
     service_name = context['service']['name']
-    environment_name = context['environment_name']
+    environment_name = context['env']
     return ServiceBuilder(service_name, environment_name)

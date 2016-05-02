@@ -1,35 +1,11 @@
-from zn_api.zn_plugin_api import update_plugin
-from wg_util import plugin_context_message
-from wg_util import api_response_message
-from build import build
-from build_namespaced import make_namespaced_builder
+from frontend.f_deploy import f_deploy
+from backend.b_deploy import b_deploy
 
 
-def deploy(context):
-
-    build(context)
-
-    print plugin_context_message("Deploying", context)
-
-    response = do_deploy(context)
-
-    print api_response_message(response)
-
-
-def do_deploy(context):
-
-    request = assemble_deploy_request(context)
-
-    return update_plugin(context, request)
-
-
-def assemble_deploy_request(context):
-
-    builder = make_namespaced_builder()
-
-    request = {}
-    request['draftJs'] = builder.contents_of_file(context, "js")
-    request['draftHtml'] = builder.contents_of_file(context, "html")
-    request['draftCss'] = builder.contents_of_file(context, "css")
-
-    return request
+def deploy(context, args):
+    if args['--frontend']:
+        return f_deploy(context, args)
+    if args['--backend']:
+        return b_deploy(context, args)
+    f_deploy(context, args)
+    b_deploy(context, args)

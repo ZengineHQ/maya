@@ -5,11 +5,10 @@ from ..exception import MayaException
 
 
 class ZnApi:
-
-    def __init__(self, context):
-        self.api_url = "https://{0}/v1".format(context['api_endpoint'])
+    def __init__(self, options):
+        self.api_url = "https://{0}/v1".format(options['endpoint'])
         self.headers = {
-            'Authorization': 'Bearer ' + context['access_token']
+            'Authorization': 'Bearer ' + options['access_token']
         }
         self.error_message_prefix = 'Error when calling Zengine API: '
 

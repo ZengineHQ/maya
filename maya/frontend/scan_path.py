@@ -3,7 +3,6 @@ import json
 
 
 class ScanPath:
-
     def __init__(self, fs, frontend_path):
         self.fs = fs
         self.frontend_path = frontend_path

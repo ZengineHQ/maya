@@ -37,13 +37,14 @@ CLI
 
 After installation, you will have a ``maya`` command on your terminal that has this basic interface::
 
-  maya (build | deploy | publish) [<plugin>] [<environment>]
+  maya (build | deploy | publish) [<plugin>] [--frontend | --backend] [--env=ENV]
 
 So you can issue commands like::
 
   maya build
   maya deploy portals
-  maya publish portals stage
+  maya deploy --frontend
+  maya publish portals --env=stage
 
 Rules are:
 
@@ -54,7 +55,7 @@ Rules are:
 Maya Project
 ---------------
 
-A maya project basically consists of code for one or more zengine plugins. You can also have code that is reused among plugins. 
+A maya project basically consists of code for one or more zengine plugins. You can also have code that is reused among plugins.
 All code is written using a generic namespace that gets replaced during the ``build`` task.
 
 Every developer should have a zengine account with its own versions of the plugins (i.e., different ids, namespaces and routes). For this reason, every maya task is done against an ``environment``.
@@ -159,7 +160,7 @@ Create a sublime project on the root (sibling of maya.json).
 Frontend Testing in Dev Mode
 ------------------------
 
-To avoid having to do a full page reload while testing, a refresh button can be injected into a workspace while in dev mode. 
+To avoid having to do a full page reload while testing, a refresh button can be injected into a workspace while in dev mode.
 
 You can either install this `plugin`_ or insert the following code into the console: ::
 
@@ -174,4 +175,4 @@ You can either install this `plugin`_ or insert the following code into the cons
 
 .. _pip: http://www.pip-installer.org/en/latest/
 .. _pyenv: https://github.com/yyuu/pyenv
-.. _plugin: https://platform.zenginehq.com/?overlay=marketplace&marketplace.action=browse&marketplace.pluginId=331 
+.. _plugin: https://platform.zenginehq.com/?overlay=marketplace&marketplace.action=browse&marketplace.pluginId=331
