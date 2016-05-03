@@ -28,7 +28,7 @@ from .backend.b_deploy import b_deploy
 from .exception import MayaException
 import sys
 
-__version__ = "2.0.edge"
+__version__ = "2.0.0"
 
 
 def main():
