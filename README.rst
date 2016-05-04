@@ -4,32 +4,36 @@ maya
 
 Zengine Plugin Build Automation.
 
-With maya, developers can code zengine plugins in a way they are used to – e.g. they can:
+With maya, developers can code Zengine plugins in a way they are used to:
 
-* use any editor of choice
-* use version control
-* test code
-* split code into different files
-* reuse code between plugins
-* collaborate on the same plugin with other developers
+* using any IDE of choice
+* using version control
+* testing code
+* spliting code into different files
+* reusing code between plugins
+* collaborating on plugins with other developers
 
 ------------
 Installation
 ------------
 
-Right now, because the repo is private, the recommended way to install maya is to clone the repo and add it to system path and ``alias maya=maya-runner.py``.
+Maya relies on Python, so be sure that is installed before proceeding::
 
-Also install those packages using `pip`_::
+    python --version
 
-    $ pip install docopt
-    $ pip install requests
-    $ pip install requests[security]
+It also relies on certain `pip`_ packages::
 
-Alternatively, you could try the following::
+    $ sudo pip install docopt
+    $ sudo pip install requests
+    $ sudo pip install requests[security]
 
-    $ pip install -ve git+ssh://git@github.com/ZengineHQ/maya.git#egg=zn-maya
+Alternatively, you can try the following::
 
-Consider managing python using something like `pyenv`_.
+    $ sudo pip install -ve git+ssh://git@github.com/ZengineHQ/maya.git#egg=zn-maya
+
+Because maya is private, the recommended way to install it is to clone this repo, `add it to your system path <https://coolestguidesontheplanet.com/add-shell-path-osx/>`_, and `add an alias <http://stackoverflow.com/questions/8967843/how-do-i-create-a-bash-alias>`_::
+
+    alias maya=maya-runner.py
 
 -----
 CLI
@@ -39,7 +43,7 @@ After installation, you will have a ``maya`` command on your terminal that has t
 
   maya (build | deploy | publish) [<plugin>] [--frontend | --backend] [--env=ENV]
 
-So you can issue commands like::
+You can issue commands like::
 
   maya build
   maya deploy portals
@@ -48,19 +52,23 @@ So you can issue commands like::
 
 Rules are:
 
-* If no plugin was specified, the task will be done for all plugins.
-* If no environment was specified, the default one will be used.
+* If no plugin is specified, the task will be done for all plugins listed in ``maya.json``.
+* If no "area" is specified, the task will be done for both frontend and backend code.
+* If no environment is specified, the default specified in ``maya.json`` will be used.
 
----------------
-Maya Project
----------------
+------------------
+Maya Project Setup
+------------------
 
-A maya project basically consists of code for one or more zengine plugins. You can also have code that is reused among plugins.
-All code is written using a generic namespace that gets replaced during the ``build`` task.
+A maya project consists of code for one or more Zengine plugins. You can also reuse code among plugins.
 
-Every developer should have a zengine account with its own versions of the plugins (i.e., different ids, namespaces and routes). For this reason, every maya task is done against an ``environment``.
+All code is written using a generic namespace, ``wgn``, that gets replaced during the ``build`` task.
 
-An environment contains the zengine api endpoint (dev, stage, prod), the developer access token and the developer-specific plugin settings. Environments are specified in a config file called ``maya.json`` which looks similar to::
+Every developer should keep his or her own copy of a plugin, separate from other developers, and separate from the production copy. Each copy will result in a different plugin ID, namespace and route. For this reason, every maya task is done against an ``environment``.
+
+An environment contains the Zengine API endpoint (dev, stage, production), the developer access token, and the developer-specific plugin settings.
+
+Environments are defined in a file called ``maya.json`` and look as follows::
 
   {
     "environments": {
@@ -71,7 +79,12 @@ An environment contains the zengine api endpoint (dev, stage, prod), the develop
           "some-plugin1": {
             "id": 256,
             "namespace": "pluginOneNamespace",
-            "route": "/plugin-one-route"
+            "route": "/plugin-one-route",
+            "services": {
+              "some-plugin1-service": {
+                "id": 101
+              }
+            }
           },
           "some-plugin2": {
             "id": 257,
@@ -84,37 +97,36 @@ An environment contains the zengine api endpoint (dev, stage, prod), the develop
     }
   }
 
-To use maya, your project structure must be the following::
+To use maya, your project structure must be as follows::
 
   your-project/
-    maya_build/
 
     plugins/
-      common/
-        reusable-code1/
-          src/
-        reusable-code2/
-          src/
 
       some-plugin1/
         src/
-        dependencies
         plugin-register.js
 
       some-plugin2/
         src/
-        dependencies
         plugin-register.js
+
+    backend/
+
+      some-plugin1-service/
+        _runner/*
+        package.json
+        plugin.js
 
     maya.json
 
--------------------
-Build
--------------------
+---------------
+Build Execution
+---------------
 
-On the build step, maya looks at the plugin ``src`` folder and concatenates all js, html and css files into single files.
+On the build step, maya looks at the plugin's ``src`` folder and concatenates all JS, HTML and CSS files into the respective single files that Zengine expects.
 
-To develop plugins along with other developers, all code can be written using a ``wgn`` canonical namespace, e.g.::
+Code can and should be written using the ``wgn`` canonical namespace, e.g.::
 
     plugin.controller('wgnVotingMainCtrl', ['$scope', 'wgnVotingPluginBootstrap', 'wgnVotingPluginModel',
         function ($scope, bootstrap, plugin) {
@@ -130,49 +142,49 @@ To develop plugins along with other developers, all code can be written using a 
         </div>
     </script>
 
-Maya will replace all the occurrences of ``wgn-`` by the *dashed* namespace and then all the ocurrences of ``wgn`` by the *camelCased* namespace specified on maya.json.
+Maya will replace all the occurrences of ``wgn-`` by the *dashed* namespace and then all the occurrences of ``wgn`` by the *camelCased* namespace specified in ``maya.json``.
+
+In addition, all occurrences of the magic string ``{replace-route}`` will be replaced with the route specified in ``maya.json``.
+
+----------------------
+Using Backend Services
+----------------------
+
+By default, backend services can be built and published with maya as long as they follow the directory structure outlined above.
+
+Any packages specified in a backend service's ``package.json`` file will *not* be automatically installed/updated, so ``npm install`` must be run manually.
 
 ------------
-Reusing code
+Reusing Code
 ------------
 
-More on this later... (``dependencies`` file)
+It is possible to use external modules in a maya codebase. This enables code abstraction and reuse among multiple plugins and developers.
 
-------------------------
-Sublime Text Integration
-------------------------
+Suppose we want to include a module called ``zn-module-grid`` in the ``some-plugin1`` plugin.
 
-You can create a Sublime Text build system, so every time you press Cmd + b, the code can be deployed to Zengine.
-
-Tools -> Build System -> New Build System... ::
+In ``plugins/some-plugin1`` you can have this minimal ``package.json`` file::
 
     {
-        "cmd": ["maya-runner.py sublime-deploy $file_path"],
-        "working_dir": "$project_path",
-        "shell": true,
-        "path": "/path/to/maya"
+      "dependencies": {
+        "zn-underscore": "git@gitlab.com:zn-modules-frontend/module-grid.git#1.0.0"
+      }
     }
 
-Create a sublime project on the root (sibling of maya.json).
+In ``plugins/some-plugin1``, execute ``npm install`` – which will download the ``zn-module-grid`` code to ``plugins/some-plugin1/node_modules/zn-module-grid``.
 
+During the maya build process, maya will scan for ``package.json`` dependencies and include those dependencies in the build path. In this example, files inside ``plugins/some-plugin1/node_modules/zn-module-grid/src`` will be included in the corresponding JS, HTML and CSS build files.
 
-------------------------
+External modules can be hosted anywhere, as long as they are reachable via ``npm install``. For now, we are using `a GitLab group <https://gitlab.com/zn-modules-frontend>`_ to store all modules.
+
+The file structure and conventions of an external maya module are exactly the same as a maya-enabled project. Maya will include files in the `src` folder and ignore all the rest. You can use sibling folder and file locations to store tests, docs, etc.
+
+If a module is listed as a dependency in ``package.json`` but doesn't have an ``src`` folder, it won't be included in the scan path. This module may be one with a custom structure that is dealt with via scripting outside of maya (e.g., it could be a module that contains other modules, aka "mother repo").
+
+----------------------------
 Frontend Testing in Dev Mode
-------------------------
+----------------------------
 
-To avoid having to do a full page reload while testing, a refresh button can be injected into a workspace while in dev mode.
-
-You can either install this `plugin`_ or insert the following code into the console: ::
-
-    var myanchor = document.createElement('a');
-    myanchor.href = "javascript:var theRoot = angular.element(document.querySelector('[ng-app=\"wizehive\"]')).injector().get('$rootScope');
-    var theScope = angular.element(document.querySelector('[ng-controller=\"PluginDeveloperCntl\"]')).scope();theRoot.$broadcast('devplugin-changed', theScope.plugin.data, true);";
-    myanchor.innerHTML = "<i class=\"icon icon-cw\"></i>";
-    var li = document.createElement("li");
-    li.appendChild(myanchor);
-    var theUL = document.querySelector('.navbar-top-links.pull-right');
-    theUL.insertBefore(li, theUL.firstChild);
+To avoid having to do a full page reload while testing, this `plugin`_ can be installed. It will inject a refresh button into the workspace that can be used to refresh your plugin code while in dev mode.
 
 .. _pip: http://www.pip-installer.org/en/latest/
-.. _pyenv: https://github.com/yyuu/pyenv
 .. _plugin: https://platform.zenginehq.com/?overlay=marketplace&marketplace.action=browse&marketplace.pluginId=331
