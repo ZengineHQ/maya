@@ -56,7 +56,7 @@ For example, in ``package.json`` you could do::
 
 Then your service could read settings from ``config.json`` and you could have ``config-dev.json`` and ``config-prod.json`` for 2 maya environments named ``dev`` and ``prod``.
 
-``maya service build <service> --env=dev`` and ``maya service build <service> --env=prod`` would generate the zip files for each of those enviroments.
+``maya service build <service> --env=dev`` and ``maya service build <service> --env=prod`` would generate the zip files for each of those environments.
 
 If your build process is more complex, you could delegate to a bash script and you would still have access to ``$MAYA_ENV`` from there.
 
