@@ -36,6 +36,30 @@ After the files were copied, Maya will execute the command ``npm install --produ
 Why? When developing in Node.js, we should be able to use ``devDependencies``, which are just like ``dependencies``, except that they are only relevant during development. Examples include test and linting libs.
 We shouldn't send those to production – not only because they are not relevant but also because they increase the zip file size. That command will generate a ``node_modules`` folder inside ``dist`` that only has the production modules.
 
+---------------------------------
+Build hook and environment settings
+---------------------------------
+
+Sometimes you need to generate a different build file for each environment.
+
+In the ``package.json`` file, you can define a script called ``maya-build``.
+
+If it exists, maya will run that script right before zipping the dist folder (i.e. all the other build steps were executed). Note: The script is run on the service folder (not the dist folder).
+
+An environment variable named ``MAYA_ENV`` will be set with the environment name (as specified in ``maya.json``).
+
+For example, in ``package.json`` you could do::
+
+  "scripts": {
+    "maya-build": "cp config-$MAYA_ENV.json dist/config.json"
+  }
+
+Then your service could read settings from ``config.json`` and you could have ``config-dev.json`` and ``config-prod.json`` for 2 maya environments named ``dev`` and ``prod``.
+
+``maya service build <service> --env=dev`` and ``maya service build <service> --env=prod`` would generate the zip files for each of those enviroments.
+
+If your build process is more complex, you could delegate to a bash script and you would still have access to ``$MAYA_ENV`` from there.
+
 -------------
 Common issues
 -------------
