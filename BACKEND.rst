@@ -17,7 +17,7 @@ On the build process, Maya will:
 * do some additional work on that folder
 * zip that ``dist`` folder to a file named ``dist.zip``
 
-Files and folders that will be copied to ``dist`` are:
+Those are the files and folders that will be copied to ``dist``:
 
 * _runner
 * lib
@@ -25,13 +25,12 @@ Files and folders that will be copied to ``dist`` are:
 * plugin.js
 * package.json
 
-The ``_runner`` and ``lib`` folders are the ones from the original zip file.
-The ``plugin.js`` and ``package.json`` are standard for Zengine backend services.
+``_runner``, ``lib``, ``plugin.js`` and ``package.json`` are standard for Zengine backend services.
 
 The ``src`` folder is meant to include the files that you want to ship to production. Usually those are additional javascript files.
 Why? This way, you can have test and docs files in other folders and maya won't bother to include those in the zip file.
 
-After the files were copied, Maya will execute the command ``npm install --production`` in the dist folder.
+After the files are copied, Maya will execute the command ``npm install --production`` in the dist folder.
 
 Why? When developing in Node.js, we should be able to use ``devDependencies``, which are just like ``dependencies``, except that they are only relevant during development. Examples include test and linting libs.
 We shouldn't send those to production – not only because they are not relevant but also because they increase the zip file size. That command will generate a ``node_modules`` folder inside ``dist`` that only has the production modules.
@@ -44,7 +43,7 @@ Sometimes you need to generate a different build file for each environment.
 
 In the ``package.json`` file, you can define a script called ``maya-build``.
 
-If it exists, maya will run that script right before zipping the dist folder (i.e. all the other build steps were executed). Note: The script is run on the service folder (not the dist folder).
+If it exists, Maya will run that script right before zipping the dist folder. The script is run inside the service folder (not the dist folder).
 
 An environment variable named ``MAYA_ENV`` will be set with the environment name (as specified in ``maya.json``).
 
@@ -68,4 +67,4 @@ Common issues
 
 Download the zip from Zengine again, delete ``_runner`` and ``lib`` (both on the backend service folder and the corresponding dist folder). Paste the ``_runner`` and ``lib`` from the downloaded zip on the backend service folder.
 
-Warning: Sometimes when you download a ``_runner`` folder from Zengine, it doesn't come with ``_runner/config.json``. Make sure you have that file.
+Warning: Sometimes when you download the ``_runner`` folder from Zengine, it doesn't come with ``_runner/config.json``. Make sure you have that file.
