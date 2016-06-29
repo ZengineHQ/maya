@@ -60,8 +60,8 @@ class PluginNamespacedCodeBuilder:
 
     def replace(self, file_path, pattern, subst):
         fh, abs_path = mkstemp()
-        with open(abs_path, 'w') as new_file:
-            with open(file_path) as old_file:
+        with codecs.open(abs_path, 'w', 'utf-8') as new_file:
+            with codecs.open(file_path, 'r', 'utf-8') as old_file:
                 for line in old_file:
                     new_file.write(line.replace(pattern, subst))
         close(fh)
