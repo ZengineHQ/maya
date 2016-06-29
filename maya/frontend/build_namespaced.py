@@ -4,6 +4,7 @@ from collections import OrderedDict
 from tempfile import mkstemp
 from os import remove, close
 from shutil import move, copyfile
+import codecs
 from maya.wg_config import canonical_build_path
 from maya.wg_config import namespaced_build_path
 
@@ -37,8 +38,8 @@ class PluginNamespacedCodeBuilder:
     def build_namespaced_file(self, replacements, extension):
         canonical_file_path = self.get_canonical_plugin_file_path(extension)
         namespaced_file_path = self.get_namespaced_plugin_file_path(extension)
-        canonical_file = open(canonical_file_path)
-        namespaced_file = open(namespaced_file_path, 'w')
+        canonical_file = codecs.open(canonical_file_path, 'r', 'utf-8')
+        namespaced_file = codecs.open(namespaced_file_path, 'w', 'utf-8')
         for line in canonical_file:
             for src, target in replacements.iteritems():
                 line = line.replace(src, target)
