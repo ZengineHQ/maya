@@ -87,9 +87,15 @@ class PluginNamespacedCodeBuilder:
         return self.namespaced_build_path + '/' + self.plugin_name
 
 
-def camel_to_dashed(namespace):
-    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', namespace)
-    return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
+def camel_to_dashed(camel):
+    def add_dash_before(match):
+        if match.start():
+            separator = '-'
+        else:
+            separator = ''
+        upper_case_char = match.group()
+        return separator + upper_case_char.lower()
+    return re.sub('[A-Z]', add_dash_before, camel)
 
 
 def make_namespaced_builder():
