@@ -150,9 +150,7 @@ In addition, all occurrences of the magic string ``{replace-route}`` will be rep
 Using Backend Services
 ----------------------
 
-By default, backend services can be built and published with maya as long as they follow the directory structure outlined above.
-
-Any packages specified in a backend service's ``package.json`` file will *not* be automatically installed/updated, so ``npm install`` must be run manually.
+Please refer to the `backend docs`_.
 
 ------------
 Reusing Code
@@ -188,3 +186,4 @@ To avoid having to do a full page reload while testing, this `plugin`_ can be in
 
 .. _pip: http://www.pip-installer.org/en/latest/
 .. _plugin: https://platform.zenginehq.com/?overlay=marketplace&marketplace.action=browse&marketplace.pluginId=331
+.. _backend docs: /BACKEND.rst
