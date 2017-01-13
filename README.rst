@@ -24,7 +24,7 @@ Maya relies on Python, so be sure that is installed before proceeding::
 It also relies on certain `pip`_ packages::
 
     $ sudo pip install docopt
-    $ sudo pip install requests
+    $ sudo pip install requests==2.11.1
     $ sudo pip install requests[security]
 
 Alternatively, you can try the following::
