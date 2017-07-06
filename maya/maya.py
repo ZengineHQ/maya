@@ -4,6 +4,7 @@ Usage:
   maya build [<plugin>] [--frontend | --backend] [--env=ENV]
   maya deploy [<plugin>] [--frontend | --backend] [--env=ENV]
   maya publish [<plugin>] [--frontend | --backend] [--env=ENV] [-y]
+  maya init [<plugin>]
   maya service (build | deploy) <service> [--env=ENV]
   maya sublime-deploy <current-file-path>
   maya --help
@@ -22,6 +23,7 @@ from .wg_util import get_all_plugin_contexts
 from .build import build
 from .deploy import deploy
 from .publish import publish
+from .init import init
 from .sublime_deploy import sublime_deploy
 from .backend.b_build import b_build
 from .backend.b_deploy import b_deploy
@@ -55,6 +57,8 @@ def execute_normal_flow(args):
 def parse_action(args):
     if args['service']:
         return parse_service_action(args)
+    if args['init']:
+        return init
     return parse_plugin_action(args)
 
 
@@ -75,6 +79,8 @@ def parse_plugin_action(args):
 
 
 def parse_contexts(args):
+    if args['init']:
+        return[None]
     if args['<service>']:
         context = get_service_context(args['<service>'], args['--env'])
         return [context]
