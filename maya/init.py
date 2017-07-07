@@ -4,7 +4,7 @@ from shutil import copyfile
 from .exception import MayaException
 
 
-def init(context, args):
+def init(args):
     folder = args['<plugin>']
     if os.path.exists(folder):
         raise MayaException('Error: Already Exists!')
