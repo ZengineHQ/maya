@@ -4,7 +4,7 @@ Usage:
   maya build [<plugin>] [--frontend | --backend] [--env=ENV]
   maya deploy [<plugin>] [--frontend | --backend] [--env=ENV]
   maya publish [<plugin>] [--frontend | --backend] [--env=ENV] [-y]
-  maya init [<plugin>]
+  maya init <plugin>
   maya service (build | deploy) <service> [--env=ENV]
   maya sublime-deploy <current-file-path>
   maya --help
