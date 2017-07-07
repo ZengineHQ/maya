@@ -1,13 +1,13 @@
 import os
 import json
 from shutil import copyfile
+from .exception import MayaException
 
 
 def init(context, args):
     folder = args['<plugin>']
     if os.path.exists(folder):
-        print('Error: Already Exists!')
-        return
+        raise MayaException('Error: Already Exists!')
     os.makedirs(folder)
     os.makedirs(folder + '/plugins')
     os.makedirs(folder + '/backend')
