@@ -17,23 +17,18 @@ With maya, developers can code Zengine plugins in a way they are used to:
 Installation
 ------------
 
-Maya relies on Python, so be sure that is installed before proceeding::
+Maya should be run as Docker container, so be sure that you have `Docker`_ installed::
 
-    python --version
+    docker --version
 
-It also relies on certain `pip`_ packages::
+Clone the maya repo and build the Docker image::
 
-    $ sudo pip install docopt
-    $ sudo pip install requests==2.11.1
-    $ sudo pip install requests[security]
+    $ cd path/to/maya
+    $ docker build -t maya .
 
-Alternatively, you can try the following::
+`Add a shell alias <http://stackoverflow.com/questions/8967843/how-do-i-create-a-bash-alias>`_::
 
-    $ sudo pip install -ve git+ssh://git@github.com/ZengineHQ/maya.git#egg=zn-maya
-
-Because maya is private, the recommended way to install it is to clone this repo, `add it to your system path <https://coolestguidesontheplanet.com/add-shell-path-osx/>`_, and `add an alias <http://stackoverflow.com/questions/8967843/how-do-i-create-a-bash-alias>`_::
-
-    alias maya=maya-runner.py
+    alias maya="docker run -it --rm -v `pwd`:/usr/src/plugin-repo --name maya-running maya"
 
 -----
 CLI
@@ -184,6 +179,7 @@ Frontend Testing in Dev Mode
 
 To avoid having to do a full page reload while testing, this `plugin`_ can be installed. It will inject a refresh button into the workspace that can be used to refresh your plugin code while in dev mode.
 
+.. _Docker: https://docs.docker.com/docker-for-mac/install/
 .. _pip: http://www.pip-installer.org/en/latest/
 .. _plugin: https://platform.zenginehq.com/?overlay=marketplace&marketplace.action=browse&marketplace.pluginId=331
 .. _backend docs: /BACKEND.rst
