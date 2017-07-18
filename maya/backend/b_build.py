@@ -1,4 +1,6 @@
 import os
+from distutils.dir_util import copy_tree
+from shutil import make_archive
 from shutil import copyfile
 from subprocess import Popen, call, PIPE
 from maya.wg_util import service_context_message_simple
@@ -43,10 +45,9 @@ class ServiceBuilder:
         self.copy_folder('node_modules/requestify')
 
     def copy_folder(self, folder):
-        src_path = self.service_path + '/' + folder + '/'
-        dst_path = self.build_path + '/' + folder + '/'
-        p = Popen(['cp', '-a', src_path, dst_path])
-        p.wait()
+        src_path = self.service_path + '/' + folder
+        dst_path = self.build_path + '/' + folder
+        copy_tree(src_path, dst_path)
 
     def copy_file(self, file_name):
         src_path = self.service_path + '/' + file_name
@@ -85,11 +86,9 @@ class ServiceBuilder:
         return exit_status == 0
 
     def zip_build_folder(self):
-        p = Popen(
-            ['ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', 'dist', self.dist_file_name],
-            cwd=self.service_path
-        )
-        p.wait()
+        zip_folder = self.build_path
+        zip_file_path = self.build_path + '/dist'
+        make_archive(zip_file_path, 'zip', zip_folder)
 
     def get_dist_file_path(self):
         return self.service_path + '/' + self.dist_file_name
