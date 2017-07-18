@@ -25,11 +25,13 @@ class ServiceBuilder:
             os.makedirs(path)
 
     def copy_files_to_build_folder(self):
-        folders_to_copy = ['_runner', 'lib', 'src']
+        folders_to_copy = ['_runner', 'lib']
         files_to_copy = ['package.json', 'plugin.js']
 
         for folder_name in folders_to_copy:
             self.copy_folder(folder_name)
+
+        self.copy_folder('src', optional=True)
 
         for file_name in files_to_copy:
             self.copy_file(file_name)
@@ -44,9 +46,11 @@ class ServiceBuilder:
         self.make_path(self.build_path + '/node_modules/requestify')
         self.copy_folder('node_modules/requestify')
 
-    def copy_folder(self, folder):
+    def copy_folder(self, folder, optional=False):
         src_path = self.service_path + '/' + folder
         dst_path = self.build_path + '/' + folder
+        if optional and not os.path.exists(src_path):
+            return
         copy_tree(src_path, dst_path)
 
     def copy_file(self, file_name):
