@@ -30,6 +30,8 @@ Add this `shell alias <http://stackoverflow.com/questions/8967843/how-do-i-creat
 
     alias maya='docker run -it --rm -v $(pwd):/usr/src/plugin-repo --name maya-running maya'
 
+To update maya, fetch the latest source code and rebuild the image.
+
 -----
 CLI
 -----
