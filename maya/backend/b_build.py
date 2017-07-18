@@ -87,7 +87,7 @@ class ServiceBuilder:
 
     def zip_build_folder(self):
         zip_folder = self.build_path
-        zip_file_path = self.build_path + '/dist'
+        zip_file_path = self.service_path + '/dist'
         make_archive(zip_file_path, 'zip', zip_folder)
 
     def get_dist_file_path(self):
