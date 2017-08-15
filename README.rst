@@ -63,14 +63,14 @@ All code is written using a generic namespace, ``wgn``, that gets replaced durin
 
 Every developer should keep his or her own copy of a plugin, separate from other developers, and separate from the production copy. Each copy will result in a different plugin ID, namespace and route. For this reason, every maya task is done against an ``environment``.
 
-An environment contains the Zengine API endpoint (dev, stage, production), the developer access token, and the developer-specific plugin settings.
+An environment contains the Zengine API endpoint, the developer access token, and the developer-specific plugin settings.
 
 Environments are defined in a file called ``maya.json`` and look as follows::
 
   {
     "environments": {
       "stage": {
-        "api_endpoint": "stage-api.zenginehq.com",
+        "api_endpoint": "api.zenginehq.com",
         "access_token": "[insert developer token here]",
         "plugins": {
           "some-plugin1": {
@@ -169,7 +169,7 @@ In ``plugins/some-plugin1``, execute ``npm install`` – which will download the
 
 During the maya build process, maya will scan for ``package.json`` dependencies and include those dependencies in the build path. In this example, files inside ``plugins/some-plugin1/node_modules/zn-module-grid/src`` will be included in the corresponding JS, HTML and CSS build files.
 
-External modules can be hosted anywhere, as long as they are reachable via ``npm install``. For now, we are using `a GitLab group <https://gitlab.com/zn-modules-frontend>`_ to store all modules.
+External modules can be hosted anywhere, as long as they are reachable via ``npm install``.
 
 The file structure and conventions of an external maya module are exactly the same as a maya-enabled project. Maya will include files in the `src` folder and ignore all the rest. You can use sibling folder and file locations to store tests, docs, etc.
 
