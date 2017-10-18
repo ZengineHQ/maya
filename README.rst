@@ -28,7 +28,7 @@ Clone the maya repo and build the Docker image::
 
 Add this `shell alias <http://stackoverflow.com/questions/8967843/how-do-i-create-a-bash-alias>`_ exactly as specified::
 
-    alias maya='docker run -it --rm -v $(pwd):/usr/src/plugin-repo --name maya-running maya'
+    alias maya='docker run -it --rm -v $(pwd):/usr/src/plugin-repo -v $HOME/.ssh:/root/.ssh --name maya-running maya'
 
 To update maya, fetch the latest source code and rebuild the image.
 
