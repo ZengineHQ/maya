@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from shutil import copyfile
 from .exception import MayaException
 
@@ -9,28 +10,33 @@ def copyInitFile(source, dest):
     destination = os.getcwd() + dest
     copyfile(registration, destination)
 
+def convertToDashCase(name):
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
+
 def init(args):
     folder = args['<plugin>']
-    if os.path.exists(folder):
+    dashFolder = convertToDashCase(folder)
+    if os.path.exists(dashFolder):
         raise MayaException('Error: Already Exists!')
-    os.makedirs(folder)
-    os.makedirs(folder + '/backend')
-    os.makedirs(folder + '/plugins')
-    os.makedirs(folder + '/plugins/' + folder)
-    os.makedirs(folder + '/plugins/' + folder + '/src')
-    os.makedirs(folder + '/plugins/' + folder + '/src/controllers')
-    os.makedirs(folder + '/plugins/' + folder + '/src/styles')
-    os.makedirs(folder + '/plugins/' + folder + '/src/views')
+    os.makedirs(dashFolder)
+    os.makedirs(dashFolder + '/backend')
+    os.makedirs(dashFolder + '/plugins')
+    os.makedirs(dashFolder + '/plugins/' + dashFolder)
+    os.makedirs(dashFolder + '/plugins/' + dashFolder + '/src')
+    os.makedirs(dashFolder + '/plugins/' + dashFolder + '/src/controllers')
+    os.makedirs(dashFolder + '/plugins/' + dashFolder + '/src/styles')
+    os.makedirs(dashFolder + '/plugins/' + dashFolder + '/src/views')
     plugin = {}
-    plugin[folder] = {
+    plugin[dashFolder] = {
         "id": "DEFINE AS NUMBER",
-        "namespace": "pluginOneNamespace",
-        "route": "/plugin-one-route",
-        "services": {
-            "some-plugin1-service": {
-                "id": "DEFINE AS NUMBER"
-            }
-        }
+        "namespace": folder,
+        "route": "/" + dashFolder,
+        #"services": {
+        #    "some-plugin1-service": {
+        #        "id": "DEFINE AS NUMBER"
+        #    }
+        #}
     }
     defaultJSON = {
         "environments": {
@@ -43,16 +49,16 @@ def init(args):
         }
     }
 
-    dname = os.getcwd() + '/' + folder
+    dname = os.getcwd() + '/' + dashFolder
     maya = open(dname + '/maya.json', 'w')
     json.dump(defaultJSON, maya, indent=2)
     maya.close()
 
-    copyInitFile('default-plugin-register.js', '/' + folder + '/plugins/' + folder + '/plugin-register.js')
-    copyInitFile('default-controller.js', '/' + folder + '/plugins/' + folder + '/src/controllers/controller.js')
-    copyInitFile('default-settings-controller.js', '/' + folder + '/plugins/' + folder + '/src/controllers/settings-controller.js')
-    copyInitFile('default-template.html', '/' + folder + '/plugins/' + folder + '/src/views/main.html')
-    copyInitFile('default-settings-template.html', '/' + folder + '/plugins/' + folder + '/src/views/settings.html')
-    copyInitFile('default-style.css', '/' + folder + '/plugins/' + folder + '/src/styles/main.css')
+    copyInitFile('default-plugin-register.js', '/' + dashFolder + '/plugins/' + dashFolder + '/plugin-register.js')
+    copyInitFile('default-controller.js', '/' + dashFolder + '/plugins/' + dashFolder + '/src/controllers/controller.js')
+    copyInitFile('default-settings-controller.js', '/' + dashFolder + '/plugins/' + dashFolder + '/src/controllers/settings-controller.js')
+    copyInitFile('default-template.html', '/' + dashFolder + '/plugins/' + dashFolder + '/src/views/main.html')
+    copyInitFile('default-settings-template.html', '/' + dashFolder + '/plugins/' + dashFolder + '/src/views/settings.html')
+    copyInitFile('default-style.css', '/' + dashFolder + '/plugins/' + dashFolder + '/src/styles/main.css')
 
     print('Done.')
