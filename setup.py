@@ -20,9 +20,6 @@ setup(
 	version = version,
 	description = "Zengine Plugin Build Automation Tool.",
 	long_description = long_descr,
-	author = "Roberto Carraretto",
-	author_email = "rc.carraretto@gmail.com",
-	url = "http://roberto.carraretto.com.br",
 	install_requires=['docopt==0.6.1',
 			'requests==2.7.0']
 	)
