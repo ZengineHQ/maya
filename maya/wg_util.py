@@ -1,4 +1,5 @@
 import sys
+import re
 from plugin_environment import make_environment
 
 
@@ -62,3 +63,7 @@ def query_yes_no(question):
             return valid[choice]
         else:
             sys.stdout.write("Please respond with 'yes' or 'no' (or 'y' or 'n').\n")
+
+def convertToDashCase(name):
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
